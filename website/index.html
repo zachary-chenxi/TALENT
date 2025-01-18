@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TALENT 项目</title>
+  <style>
+    /****** 重置与基础样式 ******/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /*
+      主体背景：白色 (#FFFFFF)
+      文字颜色：深灰 (#333)
+    */
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #FFFFFF;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /*
+      链接颜色：JHU深蓝 (#002D72)
+      悬停时下划线 + 亮一点(#003A90)
+    */
+    a {
+      text-decoration: none;
+      color: #002D72;
+    }
+    a:hover {
+      text-decoration: underline;
+      color: #003A90;
+    }
+
+    /****** 顶部导航 ******/
+    header {
+      background-color: #002D72; /* JHU深蓝 */
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #013A83; /* 深一点的蓝边框 */
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .logo img {
+      width: 48px;
+      height: 48px;
+      margin-right: 8px;
+      object-fit: contain;
+    }
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #FFFFFF;
+    }
+
+    /****** 主体布局 ******/
+    main {
+      display: flex;
+      flex-direction: row;
+      min-height: calc(100vh - 60px);
+    }
+
+    /****** 左侧侧边栏 ******/
+    .sidebar {
+      width: 240px;
+      background-color: #F8F9FA;
+      border-right: 1px solid #DADDE1;
+      padding: 1rem;
+      flex-shrink: 0;
+    }
+    .sidebar h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #002D72;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sidebar ul {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+    .sidebar ul li {
+      margin: 0.5rem 0;
+    }
+    .sidebar ul li a {
+      color: #333;
+      font-size: 0.95rem;
+      padding: 6px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+      background-color: #E1E7F0; /* 浅蓝悬停 */
+    }
+
+    /****** 右侧主要内容 ******/
+    .content-wrapper {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      background-color: #FFFFFF;
+    }
+
+    /* .page-content 默认隐藏，仅 #introduction 显示 */
+    .page-content {
+      display: none;
+    }
+    #introduction {
+      display: block; /* 默认显示"简介" */
+    }
+
+    /****** 英雄区域 ******/
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 2rem;
+      background-color: #F2F5FA;
+      border: 1px solid #DADDE1;
+      border-radius: 4px;
+      padding: 1rem;
+    }
+    .hero-text {
+      flex: 1;
+      margin-right: 1rem;
+      min-width: 280px;
+    }
+    .hero-text h1 {
+      font-size: 2rem;
+      color: #002D72;
+      margin-bottom: 0.5rem;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .hero-img {
+      flex: 1;
+      min-width: 280px;
+      text-align: center;
+    }
+    .hero-img img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      border: 1px solid #BCC2CC;
+      object-fit: cover;
+    }
+
+    /****** 标题与段落 ******/
+    h2 {
+      font-size: 1.5rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #002D72; /* 深蓝 */
+    }
+    p {
+      margin: 0.75rem 0;
+      color: #333;
+    }
+
+    /****** 白色卡片区，鼠标悬停时高亮 ******/
+    .cards-section {
+      background-color: #FFFFFF;
+      padding: 2rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      border: 1px solid #E2E2E2; /* 轻微边框 */
+    }
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background-color: #FFFFFF;
+      border: 1px solid #DDDDDD;
+      border-radius: 6px;
+      padding: 1rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    .card h4 {
+      color: #002D72;
+      margin-bottom: 0.4rem;
+      font-size: 1.1rem;
+    }
+    .card p {
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    /****** PDF展示容器 ******/
+    .pdf-container {
+      margin-top: 1.5rem;
+      border: 1px solid #DADDE1;
+      border-radius: 4px;
+      overflow: hidden;  
+      height: 750px; 
+    }
+    .pdf-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* 小屏幕适配 */
+    @media screen and (max-width: 768px) {
+      main {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #DADDE1;
+      }
+      .content-wrapper {
+        padding: 1rem;
+      }
+      .cards-section {
+        padding: 1rem;
+      }
+      .pdf-container {
+        height: 500px; /* 移动端时可相对调低 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部导航 -->
+  <header>
+    <div class="logo">
+      <img src="path-to-logo.png" alt="TALENT Logo">
+      <div class="logo-text">TALENT</div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 左侧侧边栏导航 -->
+    <aside class="sidebar">
+      <div class="nav-section">
+        <h3>目录</h3>
+        <ul>
+          <li><a href="#" onclick="showSection('introduction')">简介</a></li>
+          <li><a href="#" onclick="showSection('overview')">项目概览</a></li>
+          <li><a href="#" onclick="showSection('past')">往期夏校</a></li>
+          <li><a href="#" onclick="showSection('answers')">夏校答案</a></li>
+          <li><a href="#" onclick="showSection('original-problems')">原创题目</a></li>
+          <li><a href="#" onclick="showSection('contact')">联系方式</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- 右侧主要内容 -->
+    <div class="content-wrapper">
+
+      <!-- ========== 1. 简介 (默认显示) ========== -->
+      <section id="introduction" class="page-content">
+        <section class="hero">
+          <div class="hero-text">
+            <h1>TALENT 项目</h1>
+            <p>深入思考简单的事物</p>
+            <p style="margin-top:0.5rem;font-size:0.9rem;">
+              在这里，你可以充分体验数学与思维的碰撞，激发潜能、拓展视野。
+            </p>
+          </div>
+          <div class="hero-img">
+            <img src="path-to-hero-image.jpg" alt="TALENT合影">
+          </div>
+        </section>
+
+        <h2>简介</h2>
+        <p>
+          TALENT 项目致力于为对数学及相关领域怀抱热情的学生，提供一个高质量、全方位的学习与探索平台。我们的宗旨是鼓励学生通过探究式学习、实战演练以及团队合作来挖掘自身潜能，在深度与广度上提升对数学的理解。
+        </p>
+        <p>
+          项目的核心理念是 "思考、发现、分享" —— 我们希望学员不仅能掌握先进的知识与技能，更能在与同伴的交流中碰撞出思维的火花。无论是基础概念的夯实还是前沿课题的探讨，这里都提供充分的学术自由与鼓励，让你在宽松且具挑战性的环境中收获成长。
+        </p>
+        <p>
+          在这里，你将结识一群志同道合的伙伴，一起探索知识边界，拓展思维格局。欢迎拥有好奇心、热衷挑战的你加入 TALENT 项目，开启一段充满惊喜与收获的学习之旅。
+        </p>
+      </section>
+
+      <!-- ========== 2. 项目概览 ========== -->
+      <section id="overview" class="page-content">
+        <h2>项目概览</h2>
+        <p>
+          我们的核心受众群体是计划申请海外本科的高中生，尤其对数学、理科及综合学术发展有浓厚兴趣。为助力他们在国际舞台上脱颖而出，TALENT 汇集了一批资深导师与丰富资源，专门辅导以下课程与项目：
+        </p>
+
+        <h3>AL 系列课程</h3>
+        <ul style="margin-left: 1.2rem; line-height:1.8;">
+          <li>AL Chemistry</li>
+          <li>AL Mathematics</li>
+          <li>AL Further Mathematics</li>
+          <li>AL Economics</li>
+        </ul>
+        <p>
+          针对 A-Level 体系下的主流理科与经济学科，我们提供精准指导与习题训练，让学生在考试与学科竞赛中表现突出。
+        </p>
+
+        <h3>大学入学考试指导</h3>
+        <ul style="margin-left: 1.2rem; line-height:1.8;">
+          <li>TMUA（Test of Mathematics for University Admission）</li>
+          <li>STEP（Sixth Term Examination Paper）</li>
+          <li>MAT（Mathematics Admissions Test）</li>
+        </ul>
+        <p>
+          这些考试是英国乃至世界多所顶尖大学数学/理科专业的入学门槛。通过系统的练习与模拟，我们帮助学生熟悉试题风格，培养扎实的数学功底与灵活的解题思路。
+        </p>
+
+        <h3>美国夏校准备</h3>
+        <ul style="margin-left: 1.2rem; line-height:1.8;">
+          <li>Ross</li>
+          <li>SUMaC</li>
+          <li>PROMYS</li>
+          <li>Awesome</li>
+          <li>HSMC</li>
+        </ul>
+        <p>
+          这些知名的美国暑期项目，为高中生提供深入探索数学与 STEM 领域的机会，也是未来申请海外名校的重要加分项。我们协助学生在申请与面试环节打造强有力的学术背景与个人特色，让他们获得更高的录取成功率。
+        </p>
+
+        <div class="cards-section">
+          <div class="cards-container">
+            <div class="card">
+              <h4>Participants</h4>
+              <p>Learn more about life and mathematics at TALENT, and how to get involved!</p>
+            </div>
+            <div class="card">
+              <h4>Staff</h4>
+              <p>Discover how to teach or mentor at TALENT, and the application process for counselors.</p>
+            </div>
+            <div class="card">
+              <h4>Mission Statement</h4>
+              <p>Understand the core values and aims driving the TALENT program.</p>
+            </div>
+            <div class="card">
+              <h4>Contribute</h4>
+              <p>Help support TALENT, and empower more students to explore mathematics deeply.</p>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          我们坚信，扎实的数理基础与多角度的思维模式是学生通往未来成功的关键。TALENT 项目全方位覆盖知识、技能与申请规划，为有志于挑战世界一流大学的高中生们打造坚实的起点。
+        </p>
+      </section>
+
+      <!-- ========== 3. 往期夏校 ========== -->
+      <section id="past" class="page-content">
+        <h2>往期夏校</h2>
+        <p>
+          在这里可浏览我们往届夏校的活动回顾、项目成果与学员反馈。
+        </p>
+
+        <h3>PRIMES-MIT</h3>
+        <ul style="margin-left:1.5rem; line-height:1.8;">
+          <!-- 举例：2011 -->
+          <li>
+            <strong>2011</strong>
+            <ul>
+              <li><a href="pdf/PRIMES-MIT/2011 PRIMES-MIT/2011 PRIMES-MIT Entrance Rroblem Set.pdf" target="_blank">2011 PRIMES-MIT Entrance Rroblem Set</a></li>
+              <li><a href="pdf/PRIMES-MIT/2011 PRIMES-MIT/2011 PRIMES-MIT Entrance Solution.pdf" target="_blank">2011 PRIMES-MIT Entrance Solution</a></li>
+            </ul>
+          </li>
+          <!-- 2012 -->
+          <li>
+            <strong>2012</strong>
+            <ul>
+              <li><a href="pdf/PRIMES-MIT/2012 PRIMES-MIT/2012 PRIMES-MIT Entrance Rroblem Set.pdf" target="_blank">2012 PRIMES-MIT Entrance Rroblem Set</a></li>
+              <li><a href="pdf/PRIMES-MIT/2012 PRIMES-MIT/2012 PRIMES-MIT Entrance Solution.pdf" target="_blank">2012 PRIMES-MIT Entrance Solution</a></li>
+            </ul>
+          </li>
+          <!-- 依次添加 2013...2025 -->
+          <!-- 此处省略重复项，务必保证文件名和路径一致 -->
+        </ul>
+
+        <h3>PRIMES-USA</h3>
+        <ul style="margin-left:1.5rem; line-height:1.8;">
+          <!-- 2012 -->
+          <li>
+            <strong>2012</strong>
+            <ul>
+              <li><a href="pdf/PRIMES-USA/2012 PRIMES-USA/2012 PRIMES-USA Entrance Rroblem Set.pdf" target="_blank">2012 PRIMES-USA Entrance Rroblem Set</a></li>
+              <li><a href="pdf/PRIMES-USA/2012 PRIMES-USA/2012 PRIMES-USA Entrance Solution.pdf" target="_blank">2012 PRIMES-USA Entrance Solution</a></li>
+            </ul>
+          </li>
+          <!-- 同理添加其余年份(2013, 2014...) -->
+        </ul>
+      </section>
+
+      <!-- ========== 4. 夏校答案 ========== -->
+      <section id="answers" class="page-content">
+        <h2>夏校答案</h2>
+        <p>
+          在这里可浏览往期夏校的各类试题与解答PDF。
+          <br/>
+          如果你在 GitHub Actions 中成功编译了 <code>tex-source/main.tex</code>，并把生成的 
+          <code>main.pdf</code> 移动到与本页面同级目录，那么下面即可显示该 PDF。
+        </p>
+
+        <!-- 用iframe嵌入main.pdf (LaTeX编译产物) -->
+        <div class="pdf-container">
+          <iframe 
+              src="main.pdf" 
+              type="application/pdf"
+              onload="console.log('PDF loaded successfully')"
+              onerror="console.log('Error loading PDF')"
+          >
+              <p>
+                  无法加载PDF。
+                  <a href="main.pdf" target="_blank">点击这里直接下载PDF文件</a>
+              </p>
+          </iframe>
+        </div>
+      </section>
+
+      <!-- ========== 5. 原创题目 ========== -->
+      <section id="original-problems" class="page-content">
+        <h2>原创题目</h2>
+        <p>
+          展示团队或学员自己编写的数学题目，挑战思维极限，鼓励在题目设计中体现创造力。
+        </p>
+      </section>
+
+      <!-- ========== 6. 联系方式 ========== -->
+      <section id="contact" class="page-content">
+        <h2>联系方式</h2>
+        <p>
+          如果你对 TALENT 项目感兴趣，或有任何疑问与建议，欢迎通过以下方式联系我们：
+        </p>
+        <ul>
+          <li>邮箱：<a href="mailto:talent@example.com">talent@example.com</a></li>
+          <li>电话：123-4567-890</li>
+          <li>地址：某某省某某市某某街道 XX 号</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- JS：互斥显示指定区块 -->
+  <script>
+    function showSection(sectionId) {
+      // 1. 获取所有 .page-content
+      const allSections = document.querySelectorAll('.page-content');
+      // 2. 全部隐藏
+      allSections.forEach(sec => {
+        sec.style.display = 'none';
+      });
+      // 3. 仅显示点击的那一个
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>

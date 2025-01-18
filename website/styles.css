@@ -1,0 +1,344 @@
+:root {
+    --primary-color: #8B5CF6;
+    --text-color: #E2E8F0;
+    --bg-color: #0F172A;
+    --nav-bg: #1E293B;
+    --hover-color: #7C3AED;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* 顶部导航样式 */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--nav-bg);
+}
+
+.logo img {
+    height: 40px;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+/* 英雄区域样式 */
+.hero {
+    display: flex;
+    padding: 4rem 2rem;
+    gap: 2rem;
+    align-items: center;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.hero-content .tagline {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+.hero-image img {
+    max-width: 100%;
+    border-radius: 1rem;
+}
+
+/* 内容区域样式 */
+.content-wrapper {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    background-color: var(--nav-bg);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.nav-section {
+    margin-bottom: 2rem;
+}
+
+.nav-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar a {
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 0;
+    transition: color 0.3s;
+}
+
+.sidebar a:hover {
+    color: var(--hover-color);
+}
+
+.sidebar a.active {
+    color: var(--primary-color);
+}
+
+/* 主要内容区域样式 */
+.main-content {
+    background-color: var(--nav-bg);
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.application-notice {
+    background-color: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 2rem 0;
+}
+
+.apply-button {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.apply-button:hover {
+    background-color: var(--hover-color);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero {
+        flex-direction: column;
+    }
+} 
+
+/* 卡片容器样式 */
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.card {
+    background-color: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.card-link {
+    display: inline-block;
+    color: var(--primary-color);
+    text-decoration: none;
+    margin-top: 1rem;
+    font-weight: 500;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}
+
+/* 项目日期样式 */
+.dates-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.dates-list li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.dates-list li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+/* 赞助商样式 */
+.sponsors-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.sponsor {
+    background-color: var(--bg-color);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    width: 200px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sponsor img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* 相关项目列表样式 */
+.related-list {
+    list-style: none;
+    padding: 0;
+}
+
+.related-list li {
+    margin: 0.5rem 0;
+}
+
+.related-list a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.related-list a:hover {
+    text-decoration: underline;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .sponsors-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .sponsor {
+        width: 100%;
+        max-width: 300px;
+    }
+} 
+
+/* 面包屑导航样式 */
+.breadcrumb {
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+.breadcrumb .separator {
+    margin: 0 0.5rem;
+    color: var(--primary-color);
+}
+
+.breadcrumb .current {
+    color: var(--primary-color);
+}
+
+/* 使命宣言页面样式 */
+.mission-statement {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.mission-statement h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.mission-content {
+    line-height: 1.8;
+}
+
+.mission-intro {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+.mission-section {
+    margin: 2rem 0;
+    padding: 2rem;
+    background-color: var(--bg-color);
+    border-radius: 0.5rem;
+}
+
+.mission-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.mission-section p {
+    color: var(--text-color);
+    opacity: 0.9;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .mission-statement {
+        padding: 1rem;
+    }
+    
+    .mission-section {
+        padding: 1.5rem;
+    }
+    
+    .mission-intro {
+        font-size: 1.1rem;
+    }
+} 
+
+/* 让所有页面区块默认隐藏 */
+.page-content {
+    display: none;
+  }
+  
+  /* 例如让简介默认显示 */
+  #introduction {
+    display: block;
+  }
