@@ -13,6 +13,10 @@ jobs:
         with:
           root_file: main.tex
           working_directory: tex-source
+          extra_system_packages: |
+            texlive-lang-chinese
+            texlive-latex-extra
+            fonts-noto-cjk
 
       - name: Move PDF to root
         run: mv tex-source/main.pdf ./
@@ -23,4 +27,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add main.pdf
           git commit -m "Update compiled PDF" || echo "No changes to commit"
-          git push origin HEAD:main 
+          git push origin HEAD:main
