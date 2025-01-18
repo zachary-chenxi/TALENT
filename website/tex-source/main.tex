@@ -1,0 +1,1350 @@
+\documentclass[12pt, a4paper]{article}
+
+% 中文支持
+\usepackage[UTF8]{ctex}
+
+% 数学符号和定理环境
+\usepackage{amssymb, amsmath, amsthm}
+
+% 页面布局和行间距
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{setspace}
+\setstretch{1.3} % 行间距
+
+% 定理环境设置
+\newtheorem{theorem}{定理}[section] % 定理按章节编号
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{proposition}[theorem]{命题}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例子}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{注释}
+
+% 证明环境
+\newenvironment{solution}
+  {\begin{proof}[\textbf{解答}]}
+  {\end{proof}}
+
+% 超链接设置
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+% 页眉和页脚
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{2025 Awesome Math} % 页眉左侧内容
+\fancyhead[R]{\thepage} % 页眉右侧显示页码
+\fancyfoot[C]{\textit{Part II}}
+
+% 数学符号增强
+\usepackage{mathrsfs} % 花体字母
+\usepackage{bm} % 加粗数学符号
+
+% 颜色
+\usepackage{xcolor}
+
+\begin{document}
+
+\title{\textbf{2025 AWESOME A Part II Solution}}
+\author{作者：TALENT}
+\date{\today}
+\maketitle
+
+\tableofcontents % 目录
+\newpage
+
+\section{第一题}
+
+\noindent 设 $a_1>0$，且满足递推关系
+
+$$
+a_{n+1}=a_1 a_2 \cdot \ldots \cdot a_n+1, \quad n=1,2,3, \ldots
+$$
+
+\noindent 求整数 $m$，使得
+
+$$
+\sqrt{a_2-\frac{3}{4}}+\sqrt{a_3-\frac{3}{4}}+\cdots+\sqrt{a_{2025}-\frac{3}{4}}=a_1+a_2+\cdots+a_{2024}+m
+$$
+
+
+\subsection{解答}
+
+\noindent 在处理形如
+$$
+a_{n+1}=\underbrace{a_1 a_2 \cdots a_n}_{P_n}+1
+$$
+的递推时，一个常见的技巧是观察其是否与某些“带平方根”的恒等式产生联系，例如 $\sqrt{x-\frac{3}{4}}$ 的形式。
+
+\noindent 因此，我们猜测以下引理成立，并尝试证明：
+\begin{lemma}
+若递推关系为
+$$
+a_{n+1}=a_1 a_2 \cdots a_n+1, \quad n=1,2,3,\ldots
+$$
+则有
+$$
+\sqrt{a_{n+1}-\frac{3}{4}} = a_n-\frac{1}{2}.
+$$
+\end{lemma}
+
+\begin{proof}
+
+\noindent 首先验证 $n=2$ 的特殊情况是否满足。
+
+\noindent 根据递推关系，有
+$$
+a_2=a_1+1, \quad a_3=a_1 a_2+1=a_1\left(a_1+1\right)+1=a_1^2+a_1+1.
+$$
+计算左边：
+$$
+\sqrt{a_3-\frac{3}{4}}=\sqrt{\left(a_1^2+a_1+1\right)-\frac{3}{4}}=\sqrt{a_1^2+a_1+\frac{1}{4}}.
+$$
+注意到 $a_1^2+a_1+\frac{1}{4}=\left(a_1+\frac{1}{2}\right)^2$，因此
+$$
+\sqrt{a_1^2+a_1+\frac{1}{4}}=a_1+\frac{1}{2}, \quad (\text{取正根, 因 } a_1>0).
+$$
+计算右边：
+$$
+a_2-\frac{1}{2}=\left(a_1+1\right)-\frac{1}{2}=a_1+\frac{1}{2}.
+$$
+左边与右边相等，故
+$$
+\sqrt{a_3-\frac{3}{4}}=a_2-\frac{1}{2}, \quad (n=2).
+$$
+
+\noindent 接下来验证一般情形 $n \geq 2$。
+
+\noindent 假设对于某个 $n \geq 2$，已知
+$$
+\sqrt{a_{n+1}-\frac{3}{4}}=a_n-\frac{1}{2}.
+$$
+我们需要证明
+$$
+\sqrt{a_{n+2}-\frac{3}{4}}=a_{n+1}-\frac{1}{2}.
+$$
+由递推关系，有
+$$
+a_{n+2}=a_1 a_2 \cdots a_{n+1}+1.
+$$
+因此，
+$$
+a_{n+2}-\frac{3}{4}=\left(a_1 a_2 \cdots a_{n+1}\right)+\frac{1}{4}.
+$$
+我们希望其平方根满足
+$$
+\sqrt{a_{n+2}-\frac{3}{4}}=a_{n+1}-\frac{1}{2}.
+$$
+为此，只需证明
+$$
+\left(a_{n+1}-\frac{1}{2}\right)^2=\left(a_1 a_2 \cdots a_{n+1}\right)+\frac{1}{4}.
+$$
+展开左边：
+$$
+\left(a_{n+1}-\frac{1}{2}\right)^2=a_{n+1}^2-a_{n+1}+\frac{1}{4}.
+$$
+计算右边。由递推关系，$a_1 a_2 \cdots a_n = a_{n+1}-1$，因此
+$$
+a_1 a_2 \cdots a_{n+1}=a_{n+1}\left(a_{n+1}-1\right)=a_{n+1}^2-a_{n+1}.
+$$
+将 $\frac{1}{4}$ 加入，得
+$$
+a_1 a_2 \cdots a_{n+1}+\frac{1}{4}=a_{n+1}^2-a_{n+1}+\frac{1}{4}.
+$$
+左边与右边一致，因此
+$$
+\sqrt{a_{n+2}-\frac{3}{4}}=a_{n+1}-\frac{1}{2}.
+$$
+
+\noindent 综上，归纳法表明，对于 $n \geq 2$，
+$$
+\sqrt{a_{n+1}-\frac{3}{4}} = a_n-\frac{1}{2}.
+$$
+\end{proof}
+
+\noindent 注意：当 $n=1$ 时，
+$$
+\sqrt{a_2-\frac{3}{4}}=\sqrt{a_1+1-\frac{3}{4}}=\sqrt{a_1+\frac{1}{4}}.
+$$
+这通常不等于 $a_1-\frac{1}{2}$（除非 $a_1=2$ 恰好成立）。因此，上述结论仅适用于 $n \geq 2$。
+
+\noindent 基于上述结论，原题可以改写为
+$$
+\sum_{k=2}^{2025} \sqrt{a_k-\frac{3}{4}}=\underbrace{\sqrt{a_2-\frac{3}{4}}}_{\text{需单独保留}}+\sum_{k=3}^{2025} \sqrt{a_k-\frac{3}{4}}.
+$$
+对于首项：
+$$
+\sqrt{a_2-\frac{3}{4}}=\sqrt{a_1+1-\frac{3}{4}}=\sqrt{a_1+\frac{1}{4}}.
+$$
+对于后续项，根据引理，
+$$
+\sum_{k=3}^{2025} \sqrt{a_k-\frac{3}{4}}=\sum_{k=3}^{2025}\left(a_{k-1}-\frac{1}{2}\right)=\sum_{j=2}^{2024}\left(a_j-\frac{1}{2}\right),
+$$
+（将索引替换为 $j=k-1$）。
+
+\noindent 合并可得
+$$
+\sum_{k=2}^{2025} \sqrt{a_k-\frac{3}{4}}=\sqrt{a_1+\frac{1}{4}}+\left(\sum_{j=2}^{2024} a_j\right)-\frac{2023}{2}.
+$$
+进一步利用
+$$
+\sum_{j=2}^{2024} a_j=\sum_{j=1}^{2024} a_j-a_1,
+$$
+得到
+$$
+\sum_{k=2}^{2025} \sqrt{a_k-\frac{3}{4}}=\sum_{j=1}^{2024} a_j-a_1-\frac{2023}{2}+\sqrt{a_1+\frac{1}{4}}.
+$$
+题目右边为
+$$
+\sum_{j=1}^{2024} a_j+m.
+$$
+比较两边，消去公共项 $\sum_{j=1}^{2024} a_j$，得
+$$
+m=-a_1-\frac{2023}{2}+\sqrt{a_1+\frac{1}{4}}.
+$$
+即
+$$
+m=\sqrt{a_1+\frac{1}{4}}-a_1-1011.5.
+$$
+注意到当 $a_1=2$ 时，有
+$$
+m=\sqrt{2+\frac{1}{4}}-2-1011.5=1.5-2-1011.5=-1012.
+$$
+
+\newpage
+
+\section{第二题}
+
+\noindent 已知
+
+$$
+\prod_{n=5}^{2025}\left(\frac{n}{2}-2+\frac{3 n+1}{n^2+n+1}\right)=\frac{k}{2^m} \cdot \frac{2023!}{2025 \cdot 2026+1}
+$$
+
+\noindent 其中 $k$ 和 $m$ 是正整数，且 $k$ 是奇数，求 $10k+m$。
+
+\subsection{解答}
+
+\noindent 化简等式左边可以得到：
+$$
+\prod_{n=5}^{2025} \left( \frac{n}{2} - 2 + \frac{3n+1}{n^2+n+1} \right)
+= \prod_{n=5}^{2025} \left( \frac{n-4}{2} + \frac{3n+1}{n^2+n+1} \right)
+$$
+$$
+= \prod_{n=5}^{2025} \frac{(n-4)(n^2+n+1) + 2(3n+1)}{2(n^2+n+1)}
+$$
+$$
+= \prod_{n=5}^{2025} \frac{n^3 + n^2 + n - 4n^2 - 4n - 4 + 6n + 2}{2(n^2+n+1)} 
+$$
+$$
+= \prod_{n=5}^{2025} \frac{n^3 - 3n^2 + 3n - 2}{2(n^2+n+1)}.
+$$
+
+\noindent 我们注意到
+$$
+n^3 -3n^2 +3n -2 \;=\; (n-1)^3 \;-\;1 
+\;=\; (n-1)^3 - 1^3.
+$$
+再用立方差分解式
+$$
+a^3 - b^3 = (a - b)\,(a^2 + ab + b^2),
+$$
+令 \(a=n-1,\; b=1\)，则
+$$
+(n-1)^3 - 1^3 
+= \left((n-1)-1\right)\left((n-1)^2 + (n-1)\cdot 1 + 1^2\right) 
+= (n-2)\,\left(n^2 -n +1\right).
+$$
+这样，原表达式即化为
+$$
+\prod_{n=5}^{2025} \frac{(n-2)\,(n^2 - n +1)}{2\,(n^2 + n +1)} 
+\;=\; \prod_{n=5}^{2025} \left( \frac{n-2}{2}\;\cdot\;\frac{n^2 - n +1}{n^2 + n +1} \right).
+$$
+
+\noindent 对于第一部分：
+$$
+\prod_{n=5}^{2025} \frac{n-2}{2}
+$$
+共有 \(2025 - 5 + 1 = 2021\) 个因子，每个因子分母都有一个 2，故分母部分贡献 \(2^{2021}\)。
+
+\noindent 分子部分是 \((n-2)\) 从 \(n=5\) 到 \(n=2025\) 的连乘积，即
+$$
+\prod_{n=5}^{2025}(n-2) 
+= 3 \times 4 \times 5 \times \cdots \times 2023 = \frac{2023!}{2}.
+$$
+所以
+$$
+\prod_{n=5}^{2025} \frac{n-2}{2}
+= \frac{3\cdots 2023}{\,2^{2021}} 
+= \frac{\frac{2023!}{2}}{\,2^{2021}}
+= \frac{2023!}{\,2^{2022}}.
+$$
+
+\noindent 对于第二部分：
+$$
+\prod_{n=5}^{2025} \frac{n^2 - n +1}{n^2 + n +1}
+$$
+记
+$$
+a_n = n^2 - n + 1.
+$$
+注意到
+$$
+a_{n+1} 
+= (n+1)^2 - (n+1) + 1 
+= n^2 + 2n +1 \;-\; n -1 \;+\;1 
+= n^2 + n +1.
+$$
+恰好是分母 \(n^2 + n +1\)。因此
+$$
+\frac{n^2 - n +1}{n^2 + n +1} 
+= \frac{a_n}{a_{n+1}}.
+$$
+这样，从 \(n=5\) 到 \(2025\) 的连乘就望去是一个(Telescoping) 形式：
+$$
+\prod_{n=5}^{2025} \frac{a_n}{a_{n+1}}
+= \frac{a_5}{a_{2026}}.
+$$
+容易计算：
+$$
+a_5 = 5^2 - 5 + 1 = 25 - 5 +1 = 21,
+$$
+$$
+a_{2026} 
+= 2026^2 \;-\;2026 \;+\;1.
+$$
+$$
+a_{2026} = 2025 \times 2026 + 1.
+$$
+因此
+$$
+\prod_{n=5}^{2025}\frac{n^2 - n +1}{n^2 + n +1}
+= \frac{21}{\,2025 \times 2026 +1}.
+$$
+
+\noindent 所以
+$$
+\prod_{n=5}^{2025}\left(\tfrac{n}{2} -2 + \tfrac{3n+1}{n^2+n+1}\right)
+=\left(\frac{2023!}{\,2^{2022}}\right)
+\;\times\;
+\left(\frac{21}{\,2025\cdot 2026 +1}\right)
+= \frac{\,21 \cdot 2023!}{\,2^{2022}\,\left(2025\cdot 2026 +1\right)}.
+$$
+
+\noindent 由题
+$$
+\prod_{n=5}^{2025}\left(\tfrac{n}{2} -2 + \tfrac{3n+1}{n^2+n+1}\right) = \frac{k}{2^m}\cdot \frac{2023!}{\,2025\cdot 2026+1}.
+$$
+其中 \(k\) 为正奇数，\(m\) 为正整数。
+
+\noindent 比较可知
+$$
+k = 21,\quad m = 2022.
+$$
+
+\noindent 计算
+$$
+10k + m = 10 \times 21 + 2022 = 210 + 2022 = 2232.
+$$
+
+\newpage
+
+\section{第三题}
+
+\noindent 解方程：
+
+$$
+\sqrt{x^2+45x+2025}-\sqrt{x^2-24x+576}=39。
+$$
+
+\subsection{解答}
+
+\noindent 令
+$$
+A \;=\;\sqrt{x^2 + 45x + 2025}, 
+\quad
+B \;=\;\sqrt{x^2 - 24x + 576}.
+$$
+題目給出
+$$
+A - B \;=\;39
+\;\;\Rightarrow\;\;
+A \;=\;39 + B.
+$$
+$$
+A^2 \;=\;(39 + B)^2 
+\;\;\Rightarrow\;\;
+x^2 + 45x + 2025 
+\;=\;
+39^2 \;+\; 78\,B \;+\; B^2.
+$$
+因此代入可得
+$$
+x^2 + 45x + 2025 
+\;=\;
+39^2 
+\;+\;
+78\,\sqrt{x^2 - 24x + 576}
+\;+\;
+\left(x^2 - 24x + 576\right).
+$$
+$$
+x^2 + 45x + 2025
+\;=\;
+x^2 - 24x + 576
+\;+\;
+1521
+\;+\;
+78\,\sqrt{x^2 - 24x + 576}.
+$$
+$$
+45x + 24x + 2025 - 2097
+\;=\;
+78\,\sqrt{x^2 - 24x + 576}.
+$$
+$$
+69x - 72 
+\;=\;
+78\,\sqrt{x^2 - 24x + 576}.
+$$
+
+\noindent 因此
+$$
+\sqrt{x^2 - 24x + 576}
+\;=\;
+\dfrac{69x - 72}{78}.
+$$
+（注意右边必须满足 \(\ge 0\)，亦即 \(69x - 72 \ge 0\)，从而 \(x \ge \tfrac{72}{69} = \tfrac{24}{23}\)。）
+
+$$
+x^2 - 24x + 576
+\;=\;
+\left(\tfrac{69x - 72}{78}\right)^2.
+$$
+$$
+6084\,\left(x^2 - 24x + 576\right)
+\;=\;
+(69x - 72)^2.
+$$
+
+\noindent 现在我们展开两边并进行简单的计算：
+$$
+6084\,x^2 
+\;-\;
+6084 \cdot 24\,x
+\;+\;
+6084 \cdot 576.
+$$
+
+\noindent 由于\(6084 \cdot 24 = 146016\)，\, \(6084 \cdot 576 = 3{,}504{,}384.\)
+
+\noindent 所以左边为
+$$
+6084\,x^2 
+\;-\; 146016\,x 
+\;+\; 3{,}504{,}384.
+$$
+
+\noindent 右边为
+$$
+(69x - 72)^2 
+\;=\;
+(69x)^2
+\;-\;
+2 \cdot 69x \cdot 72
+\;+\;
+72^2.
+$$
+由于\( (69x)^2 = 4761\,x^2\), \, \( 2 \cdot 69 \cdot 72 \,=\, 9936\), \, \( 72^2 = 5184.\)
+
+\noindent 所以右边为
+$$
+4761\,x^2 \;-\; 9936\,x \;+\; 5184.
+$$
+
+\noindent 合并两边可得
+$$
+6084\,x^2 - 146016\,x + 3{,}504{,}384 
+\;-\;
+\left(4761\,x^2 - 9936\,x + 5184\right)
+\;=\;0.
+$$
+$$
+1323\,x^2 
+\;-\;
+136080\,x 
+\;+\;
+3{,}499{,}200
+\;=\;
+0.
+$$
+
+\noindent 注意到所有系数都有因子27，所以
+$$
+27
+\left(49\,x^2 \;-\;5040\,x \;+\;129600\right)
+\;=\;0
+\;\;\Rightarrow\;\;
+49\,x^2 \;-\;5040\,x \;+\;129600
+\;=\;0.
+$$
+$$
+x \;=\;
+\dfrac{5040 \;\pm\; \sqrt{(5040)^2 \;-\;4\cdot 49 \cdot 129600}}{2\cdot 49}.
+$$
+注意到判别式恰好为0，只有一个实根：
+$$
+x 
+\;=\;
+\dfrac{5040}{2 \cdot 49}
+\;=\;
+\dfrac{2520}{49}
+\;=\;
+\dfrac{360}{7}.
+$$
+
+\noindent 显然\(\dfrac{360}{7} \gg \frac{24}{23} \approx 1\)，故其符合我们前面对于域的要求。
+
+\newpage
+
+\section{第四题}
+
+\noindent 找出一个合适的 $n$ 和符号的选择（包含 "+" 和 "-"，且至少包含一个减号），使得：
+
+$$
+\pm 1^3 \pm 2^3 \pm \cdots \pm n^3=2025
+$$
+
+
+\subsection{解答}
+
+\noindent 我们知道著名恒等式：
+$$
+1^3+2^3+3^3+\cdots+n^3=\left(\frac{n(n+1)}{2}\right)^2
+$$
+
+\noindent 且我们知道，
+$$
+2025 = 45^2 = \left(\frac{9 \times 10}{2}\right)^2 = \sum_{k=1}^9 k^3
+$$
+
+\noindent 因此，$n=9$ 是一个最小的可能满足的 $n$，虽然其不能直接给出符合题目要求的答案，但给了我们需要尝试的 $n$ 的最小界。
+
+\noindent 如果我们令某些 $k^3$ 的符号都为负，那么其对总和的影响是减去 $2 k^3$ 。也就是说，如果
+$$
+S_n=1^3+2^3+\cdots+n^3=\left(\frac{n(n+1)}{2}\right)^2,
+$$
+那么带符号的和可写为
+$$
+\underbrace{\left(+1^3+\cdots+n^3\right)}_{\text{全正号和 } S_n} - 2 \times \text{(被翻为负号的那部分立方和)}.
+$$
+
+\noindent 我们想要
+$$
+S_n - 2 \times \text{(负号部分立方和)} = 2025,
+$$
+从而得到
+$$
+\text{负号部分立方和} = \frac{S_n - 2025}{2}.
+$$
+
+\noindent 所以可以发现如下限制：
+\begin{itemize}
+    \item $S_n - 2025 \geq 0$，即 $S_n \geq 2025$，否则没法把和降到 2025。
+    \item $S_n - 2025$ 必须是偶数，否则 $\frac{S_n - 2025}{2}$ 不会是整数，翻号和就凑不成 2025。
+    \item $\frac{S_n - 2025}{2}$ 只能由若干互不相同的 $k^3$ 之和组成（因为每个整数 $k$ 只能出现一次，其立方也只能出现一次）。
+\end{itemize}
+
+\noindent 我们紧接着尝试几项来帮助找到更多的规律。
+
+\begin{itemize}
+    \item 对于 $n = 10$，
+    $$
+    S_{10} = 1^3 + 2^3 + \cdots + 10^3 = \left( \frac{10 \times 11}{2} \right)^2 = 55^2 = 3025.
+    $$
+    $$
+    S_{10} - 2025 = 1000 \text{ 是偶数，} \quad \frac{S_{10} - 2025}{2} = 500.
+    $$
+    需在 $\{1, 8, 27, 64, 125, 216, 343, 512, 729, 1000\}$ 中找到子集和为 500 的组合，但无法满足。因此 $n = 10$ 无解。
+
+    \item 对于 $n = 11$，
+    $$
+    S_{11} = \left( \frac{11 \times 12}{2} \right)^2 = 66^2 = 4356.
+    $$
+    $$
+    S_{11} - 2025 = 2331 \text{ 是奇数，} \quad \frac{S_{11} - 2025}{2} = 1165.5 \text{ 不是整数，不满足限制条件。}
+    $$
+
+    \item 对于 $n = 12$，
+    $$
+    S_{12} = 78^2 = 6084.
+    $$
+    $$
+    S_{12} - 2025 = 4059 \text{ 依然是奇数，} \quad \frac{S_{12} - 2025}{2} = 2029.5 \text{ 不是整数，不满足限制条件。}
+    $$
+
+    \item 对于 $n = 13$，
+    $$
+    S_{13} = 91^2 = 8281.
+    $$
+    $$
+    S_{13} - 2025 = 6256 \text{ 是偶数，} \quad \frac{S_{13} - 2025}{2} = 3128.
+    $$
+    需在 $\{1, 8, 27, 64, 125, 216, 343, 512, 729, 1000, 1331, 1728, 2197\}$ 找到子集和为 3128 的组合，但无法满足。因此 $n = 13$ 无解。
+
+    \item 对于 $n=14$，
+    $$
+    S_{14}=\left(\frac{14 \times 15}{2}\right)^2=105^2=11025.
+    $$
+    $$
+    S_{14} - 2025 = 11025 - 2025 = 9000, \quad \frac{S_{14} - 2025}{2} = 4500.
+    $$
+    需在 $\{1^3, 2^3, \ldots, 14^3\}$ 找到子集和为 4500 的组合。
+
+    \noindent 由于 4500 大于任意单独子集，我们从 $14^3$ 开始向下计算组合可能。
+    $$
+    4500 - 14^3 = 4500 - 2744 = 1756.
+    $$
+    注意到 $12^3$ 接近于 1756，于是我们先尝试，
+    $$
+    1756 - 12^3 = 1756 - 1728 = 28.
+    $$
+    注意到 $28 = 1^3 + 3^3$，所以我们可以找到 $n = 14$ 时满足子集合为 4500 的情况：
+    $$
+    4500 = 14^3 + 12^3 + 3^3 + 1^3.
+    $$
+\end{itemize}
+
+
+\newpage
+
+\section{第五题}
+
+\noindent 给出一个实数 \(a\) ，满足：
+\[
+2025a^2 + \frac{1}{45a} = 45a
+\]
+
+\noindent 计算：
+\[
+2025^2a^4 + \frac{1}{45a} 
+\]
+
+
+\subsection{解答}
+
+\noindent 令
+$$
+p \;=\; 45\,a.
+$$
+那么
+$$
+2025 \;=\; 45^2,
+\quad
+2025\,a^2 \;=\; 45^2\,a^2 \;=\; (45\,a)^2 \;=\; p^2.
+$$
+
+$$
+2025\,a^2 \;+\;\frac{1}{45\,a} \;=\; 45\,a \;\Rightarrow\; p^2 \;+\;\frac{1}{p} \;=\; p.
+$$
+
+\noindent 注意到
+$$
+2025^2\,a^4 
+\;=\;
+(2025\,a^2)^2 
+\;=\;
+(p^2)^2 
+\;=\;
+p^4,
+$$
+并且
+$$
+\frac{1}{45\,a} \;=\;\frac{1}{p}.
+$$
+因此所求等价于
+$$
+p^4 \;+\;\frac{1}{p}.
+$$
+
+\noindent 于是，原问题化为：
+
+已知 \(p\) 满足
+$$
+p^2 \;+\;\frac{1}{p} \;=\; p,
+$$
+试求
+$$
+p^4 \;+\;\frac{1}{p}.
+$$
+
+\noindent 整理可得
+$$
+p^2 \;-\; p \;+\;\frac{1}{p} \;=\; 0.
+$$
+$$
+p^3 \;-\; p^2 \;+\; 1 \;=\; 0,
+\quad
+p^3 \;=\; p^2 \;-\; 1.
+$$
+$$
+p^4 
+\;=\; p \cdot p^3 
+\;=\; p\,\bigl(p^2 \;-\; 1\bigr)
+\;=\; p^3 \;-\; p
+\;=\; (p^2 - 1) \;-\; p
+\;=\; p^2 \;-\; p \;-\; 1.
+$$
+
+\noindent 另外从原方程
+$$
+p^2 + \frac{1}{p} = p
+$$
+可知
+$$
+\frac{1}{p} \;=\; p \;-\; p^2.
+$$
+因此
+$$
+p^4 \;+\;\frac{1}{p}
+\;=\;
+\bigl(p^2 \;-\; p \;-\; 1\bigr)
+\;+\;
+\bigl(p \;-\; p^2\bigr)
+\;=\;
+-1.
+$$
+
+\noindent 所以
+$$
+2025^2\,a^4 \;+\;\frac{1}{45\,a}
+\;=\;
+p^4 + \frac{1}{p}
+\;=\;
+-1.
+$$
+
+\newpage
+
+\section{第六题}
+
+\noindent 满足方程 
+$$
+44a^2 = 2025\lfloor a\rfloor \{a\}
+$$ 
+
+\noindent 的最大实数 $a$ 可以表示为 $\frac{m}{n}$，其中 $m$ 和 $n$ 是互质的正整数。求 $m+n$ 的值。
+
+\noindent 这里，$\lfloor a\rfloor$ 表示 $a$ 的向下取整（不超过 $a$ 的最大整数），$\{a\}$ 表示 $a$ 的小数部分。
+
+
+\subsection{解答}
+
+\noindent 令
+$$
+n \;=\; \lfloor a\rfloor \quad(\text{整数}), 
+\quad x \;=\; \{a\} \;=\; a - n \quad (0 \le x < 1).
+$$
+那么 \(a = n + x\)，方程变为
+$$
+44\, (n + x)^2 \;=\; 2025\,n\,x.
+$$
+$$
+44\,(n^2 + 2nx + x^2)
+\;=\;
+2025\,n\,x.
+$$
+$$
+44\,n^2 \;+\; 88\,n\,x \;+\; 44\,x^2
+\;=\;
+2025\,n\,x.
+$$
+$$
+44\,n^2 
+\;+\; (88 - 2025)\,n\,x
+\;+\;
+44\,x^2
+\;=\;
+0.
+$$
+$$
+44\,n^2 
+\;-\; 1937\,n\,x
+\;+\;
+44\,x^2
+\;=\;
+0.
+$$
+\noindent 判别式为
+$$
+\Delta 
+\;=\;
+(-1937\,n)^2 \;-\; 4\,\cdot\,44\,\cdot\,44\,n^2
+\;=\;
+n^2\bigl(1937^2 \;-\; 4\cdot 44\cdot 44\bigr).
+$$
+\noindent 因此方程的根为
+$$
+x \;=\;
+\frac{1937\,n \;\pm\; n \cdot 1935}{2 \cdot 44}
+\;=\;
+\frac{n}{88}\,\bigl(1937 \pm 1935\bigr).
+$$
+\noindent 故
+$$
+x_1 \;=\; \frac{n}{88}\,(1937 + 1935) \;=\; \frac{n}{88}\,\cdot 3872 = 44n.
+$$
+$$
+x_2 \;=\; \frac{n}{88}\,(1937 - 1935) \;=\; \frac{n}{88}\,\cdot 2 = \frac{n}{44}.
+$$
+\noindent 由于 \(x < 1\) 为小数部分，分析可知：
+\begin{itemize}
+    \item 对 \(x_1\)，若 \(n\) 为正整数则 \(44n \ge 44\)，显然 \(x_1 \ge 1\)，不满足 \(x<1\)。  
+    \item 对 \(x_2\)，要满足 \(0 \le x_2 < 1\)，则需 \(0 \le n < 44\)。因为 \(n\) 是整数，故 \(n\) 最大可取 \(43\)。  
+\end{itemize}
+
+\noindent 于是
+$$
+x \;=\; \frac{n}{44},
+\quad
+a \;=\; n + x \;=\; n + \frac{n}{44} \;=\; n\Bigl(1 + \frac{1}{44}\Bigr) \;=\; \frac{45n}{44}.
+$$
+在 \(n = 1,2,3,\dots,43\) 中，为使 \(a\) 最大，取 \(n=43\)。  
+
+\noindent 此时
+$$
+a \;=\; \frac{45 \cdot 43}{44} \;=\; \frac{1935}{44}.
+$$
+\noindent 这里
+$$
+m = 1935,
+\quad
+n = 44,
+$$
+于是
+$$
+m + n 
+\;=\;
+1935 \;+\; 44
+\;=\;
+1979.
+$$
+
+\newpage
+
+\section{第七题}
+
+\noindent 求解以下方程组在整数解中的解：
+
+$$
+\begin{aligned}
+x^3 - 3xyz + y^3 & = 172, \\
+x^2 - xy + y^2 + \frac{2025}{x + y + z} & = z(x + y - z).
+\end{aligned}
+$$
+
+
+
+\subsection{解答}
+
+\noindent 令
+$$
+S \;=\; x + y, 
+\quad
+M \;=\; x + y + z,
+\quad
+P \;=\; x\,y.
+$$
+
+\noindent 对于式一
+$$
+x^3 \;+\; y^3 \;-\; 3\,x\,y\,z \;=\; 172,
+$$
+可以写成
+$$
+x^3 + y^3 \;=\; 172 \;+\; 3\,x\,y\,z.
+$$
+
+\noindent 因为
+$$
+x^3 + y^3 
+\;=\;
+(x+y)\,(x^2 - x\,y + y^2)
+\;=\;
+S\,(x^2 - x\,y + y^2),
+$$
+且
+$$
+x^2 - x\,y + y^2 
+\;=\;
+(x+y)^2 - 3\,x\,y 
+\;=\;
+S^2 \;-\;3\,P,
+$$
+所以式一可以写成
+$$
+S \,\bigl(S^2 - 3\,P \bigr)
+\;-\;
+3\,P\,z
+\;=\;
+172.
+$$
+
+\noindent 因为 \(z = M - S\)，有
+$$
+\underbrace{S \,\bigl(S^2 - 3\,P \bigr)}_{=\,S^3 - 3\,P\,S}
+\;-\;
+3\,P\,\bigl(M - S \bigr)
+\;=\;
+172.
+$$
+整理可得
+$$
+S^3 
+\;-\;
+3\,P\,S
+\;-\;
+3\,P\,M
+\;+\;
+3\,P\,S
+\;=\;
+172
+\;\Longrightarrow\;
+S^3 
+\;-\;
+3\,P\,M
+\;=\;
+172.
+$$
+即
+\[
+3\,P\,M 
+\;=\;
+S^3 - 172
+\;\;\Longrightarrow\;\;
+P\,M
+\;=\;
+\dfrac{S^3 - 172}{\,3\,}.
+\tag{1'}
+\]
+
+\noindent 对于式二
+$$
+x^2 - x\,y + y^2 \;+\;\dfrac{2025}{\,x + y + z\,} 
+\;=\;
+z\,(x+y - z),
+$$
+且 
+$$
+x^2 - x\,y + y^2
+\;=\;
+S^2 - 3\,P,
+$$
+则左边是
+$$
+\bigl(S^2 - 3\,P\bigr) + \dfrac{2025}{\,M\,},
+$$
+右边是
+$$
+(M-S)\,\bigl(S - (M-S)\bigr)
+\;=\;
+(M-S)\,(2\,S - M).
+$$
+于是我们有
+$$
+S^2 - 3\,P + \dfrac{2025}{\,M\,}
+\;=\;
+(M - S)\,\bigl(2\,S - M\bigr).
+$$
+
+\noindent 左边乘上 \(M\) 得
+$$
+M\,S^2 \;-\; 3\,P\,M \;+\; 2025
+\;=\;
+M\,(M - S)\,(2\,S - M).
+$$
+将 (1') 代入可得
+$$
+M\,S^2 \;-\; \bigl(S^3 - 172\bigr) + 2025
+\;=\;
+M\,(M - S)\,(2\,S - M).
+$$
+左边化简为
+$$
+M\,S^2 \;-\; S^3 + 172 + 2025
+\;=\;
+M\,S^2 \;-\; S^3 + 13^3,
+$$
+右边化简为
+$$
+M\,(M-S)\,(2S - M)
+\;=\;
+-\,2\,M\,S^2 \;+\;3\,M^2\,S \;-\;M^3.
+$$
+因此
+$$
+M\,S^2 - S^3 + 2197
+\;=\;
+-\,2\,M\,S^2 + 3\,M^2\,S - M^3.
+$$
+整理得
+$$
+0
+\;=\;
+-\,3\,M\,S^2 
+\;+\;
+3\,M^2\,S
+\;-\;
+M^3
+\;+\;
+S^3
+\;-\;
+13^3.
+$$
+
+\noindent 注意到，
+$$
+(S - M)^3 
+\;=\;
+S^3
+\;-\;3\,S^2\,M
+\;+\;3\,S\,M^2
+\;-\;M^3.
+$$
+于是可以写成
+\[
+(S-M)^3 \;-\;2197 \;=\;0
+\;\;\Longrightarrow\;\;
+(S-M)^3 \;=\;13^3
+\;\;\Longrightarrow\;\;
+S - M 
+\;=\;
+13.
+\]
+所以
+\[
+M 
+\;=\;
+S - 13.
+\tag{2'}
+\]
+
+\noindent 把 \(M = S - 13\) 代回式一，从 (1') 可知
+$$
+P\,M 
+\;=\;
+\dfrac{S^3 - 172}{\,3\,}.
+$$
+而 \(M = S - 13\)，因此
+$$
+P 
+\;=\;
+\dfrac{\,S^3 - 172\,}{\,3\,(S - 13)\!}.
+$$
+
+\noindent 为使 \(P = x\,y\) 为整数，必须让
+$$
+\dfrac{S^3 - 172}{\,S - 13\,}
+$$
+能被 \(3\) 整除。
+
+\noindent 注意到
+$$
+S^3 - 172 
+\;=\;
+(S - 13)\,\Bigl(S^2 + 13\,S + 169\Bigr)
+\;+\;
+2025.
+$$
+所以
+$$
+\dfrac{S^3 - 172}{\,S - 13\,}
+\;=\;
+S^2 + 13\,S + 169 
+\;+\;
+\dfrac{2025}{\,S - 13\,}.
+$$
+进而
+\[
+P
+\;=\;
+\dfrac{\,S^3 - 172\,}{\,3\,(S - 13)\!}
+\;=\;
+\dfrac{S^2 + 13\,S + 169}{\,3\,}
+\;+\;
+\dfrac{675}{\,S - 13\,}.
+\tag{3}
+\]
+
+\noindent 为满足 \(P\) 为整数，我们有如下限制：
+\begin{itemize}
+    \item $\frac{S^2+13 S+169}{3}$ 为整数；
+    \item $\frac{675}{S-13}$ 为整数。
+\end{itemize}
+
+\noindent 经过筛选，当 \(S = 4\) 时，满足所有限制。此时
+$$
+M = S - 13 = -9.
+$$
+代入得
+$$
+P = 4.
+$$
+解方程
+$$
+x + y = 4, \quad x\,y = 4,
+$$
+得到唯一解 \(x = 2, \, y = 2\)，且
+$$
+z = M - S = -9 - 4 = -13.
+$$
+因此，唯一的整数三元组为
+$$
+(x, y, z) = (2, 2, -13).
+$$
+
+\newpage
+
+\section{第八题}
+
+\noindent 考虑数列 $1, 9, 17, 25, \ldots, 2025$。我们选择两个数 $x$ 和 $y$，并用数 $x + y - 1$ 替换它们。经过 253 次这样的操作后，剩下的数是多少？
+
+
+\subsection{解答}
+
+\noindent 观察到它是一个首项 \(a_1 = 1\)、公差 \(d = 8\) 的等差数列。  
+若最后一项为 \(2025\)，则可由一般项公式：
+$$
+a_n = a_1 + (n - 1)d
+$$
+求出 \(n\)：
+$$
+2025 = 1 + (n - 1)\times 8
+\quad\Longrightarrow\quad
+2024 = 8(n - 1)
+\quad\Longrightarrow\quad
+n - 1 = 253
+\quad\Longrightarrow\quad
+n = 254.
+$$
+
+\noindent 因此，原本共有 \(254\) 个数字。
+
+\noindent 由等差数列求和公式：
+$$
+S = \frac{n}{2}\bigl(a_1 + a_n\bigr) 
+   = \frac{254}{2} \times (1 + 2025) 
+   = 127 \times 2026.
+$$
+计算得：
+$$
+S = 2026 \times (100 + 27) 
+   = 2026 \times 100 + 2026 \times 27 
+   = 202600 + 54702 
+   = 257302.
+$$
+
+\noindent 因此，原始总和 \(S = 257302\)。
+
+\noindent 在每次操作中，选 \(x\) 和 \(y\)，用 \(x + y - 1\) 取代它们。  
+原总和 \(\dots + x + \dots + y + \dots\) 与新总和 \(\dots + (x + y - 1) + \dots\) 的差为
+$$
+(x + y - 1) - (x + y) = -1.
+$$
+可见每做一次操作，总和减少 1。
+
+\noindent 共需进行 \(254 - 1 = 253\) 次操作后，总和将减少 \(253\)。  
+因此，最终剩下的那个数为：
+$$
+\text{最终剩下的那个数} 
+= 257302 - 253 
+= 257049.
+$$
+   
+\newpage
+
+\section{第九题}
+
+\noindent 求解以下方程组在整数解中的解：
+$$
+x\left(y^2-z^2\right)=2025, \quad y\left(z^2-x^2\right)=341, \quad z\left(x^2-y^2\right)=1664.
+$$
+
+
+\subsection{解答}
+
+\noindent 式一
+$$
+x\,(y^2 - z^2) \;=\; 2025 \;>\; 0.
+$$
+说明：
+\begin{itemize}
+    \item 若 \(x > 0\)，则 \(y^2 - z^2 > 0\)，即 \(\lvert y\rvert > \lvert z\rvert\)；
+    \item 若 \(x < 0\)，则 \(y^2 - z^2 < 0\)，即 \(\lvert y\rvert < \lvert z\rvert\).
+\end{itemize}
+
+\noindent 同理，式二
+$$
+y\,(z^2 - x^2) \;=\; 341 \;>\; 0
+$$
+说明：
+\begin{itemize}
+    \item 若 \(y > 0\)，则 \(z^2 - x^2 > 0\)，即 \(\lvert z\rvert > \lvert x\rvert\)；
+    \item 若 \(y < 0\)，则 \(z^2 - x^2 < 0\)，即 \(\lvert z\rvert < \lvert x\rvert\).
+\end{itemize}
+
+\noindent 式三
+$$
+z\,(x^2 - y^2) \;=\; 1664 \;>\; 0
+$$
+说明：
+\begin{itemize}
+    \item 若 \(z > 0\)，则 \(x^2 - y^2 > 0\)，即 \(\lvert x\rvert > \lvert y\rvert\)；
+    \item 若 \(z < 0\)，则 \(x^2 - y^2 < 0\)，即 \(\lvert x\rvert < \lvert y\rvert\).
+\end{itemize}
+
+\noindent 将三式结合，发现 \(x, y, z\) 要有正有负。
+
+\noindent 先尝试
+$$
+x < 0, \quad y > 0, \quad z > 0.
+$$
+那么：
+\begin{itemize}
+    \item 由式一 \(x(y^2 - z^2) > 0\) 且 \(x < 0\)，可知 \(y^2 - z^2 < 0\)，即 \(\lvert y\rvert < \lvert z\rvert\)。因 \(y > 0, z > 0\)，故 \(y < z\)。
+    \item 由式二 \(y(z^2 - x^2) > 0\) 且 \(y > 0\)，可知 \(z^2 - x^2 > 0\)，即 \(\lvert z\rvert > \lvert x\rvert\)。但 \(x < 0\) 不影响绝对值比较，所以 \(z > \lvert x\rvert\)。
+    \item 由式三 \(z(x^2 - y^2) > 0\) 且 \(z > 0\)，可知 \(x^2 - y^2 > 0\)，即 \(\lvert x\rvert > \lvert y\rvert\)。  
+\end{itemize}
+
+\noindent 综合上述分析：
+$$
+y < |x| < z.
+$$
+
+\noindent 因为 \(x < 0\)，式一
+$$
+x\,(y^2 - z^2) \;=\; 2025
+$$
+等价于
+$$
+-(|x|)\,(y^2 - z^2) \;=\; 2025,
+$$
+即
+$$
+z^2 - y^2 \;=\;\frac{2025}{|x|}.
+$$
+这意味着 \((z^2 - y^2)\) 是 \(2025\) 的某个除数。同时，\(|x|\) 也必然是 \(2025\) 的正因子。
+
+\noindent \(2025 = 3^4 \times 5^2\)，其正因子有：
+$$
+1, 3, 5, 9, 15, 25, 27, 45, 75, 81, \dots
+$$
+
+\noindent 尝试取 \(|x| = 15\)，则
+$$
+z^2 - y^2 = \frac{2025}{15} = 135.
+$$
+令
+$$
+x = -15,
+$$
+式一自动满足。只需解
+$$
+z^2 - y^2 = 135.
+$$
+
+\noindent 将式二化为：
+$$
+y\,(z^2 - x^2) \;=\; 341 
+\quad\Longrightarrow\quad
+y\,(z^2 - 225) \;=\; 341.
+$$
+
+\noindent 将式三化为：
+$$
+z\,(x^2 - y^2) \;=\; 1664
+\quad\Longrightarrow\quad
+z\,(225 - y^2) \;=\; 1664.
+$$
+
+\noindent 此时我们有约束：
+$$
+\begin{cases}
+z^2 - y^2 = 135,\\[4pt]
+z^2 > y^2\quad (\text{所以 } z > y > 0),\\[3pt]
+z > |x| = 15,\quad y < 15.
+\end{cases}
+$$
+将 \(z^2 - y^2 = 135\) 写成因式分解：
+$$
+(z-y)\,(z+y) = 135.
+$$
+因 \(z > y > 0\)，故 \((z-y)\) 和 \((z+y)\) 是 \(135\) 的正因子对，且 \((z+y) > (z-y)\)。
+
+\noindent \(135\) 的正因子配对为：
+$$
+135 = 
+1 \times 135, \quad 
+3 \times 45, \quad
+5 \times 27, \quad
+9 \times 15.
+$$
+试着列举：
+\begin{enumerate}
+    \item \((z-y)=1,\,(z+y)=135\) \(\implies z=68,y=67\)；但此时 \(y=67\) 不满足 \(y < 15\)，失败。
+    \item \((z-y)=3,\,(z+y)=45\) \(\implies z=24,y=21\)；此时 \(y=21\) 仍不满足 \(y < 15\)，失败。
+    \item \((z-y)=5,\,(z+y)=27\) \(\implies z=16,y=11\)。此时 \(z=16 > 15\)，\(y=11 < 15\)，且 \(z > y > 0\) 成立。
+    \item \((z-y)=9,\,(z+y)=15\) \(\implies z=12,y=3\)；但此时 \(z=12\) 不满足 \(z > 15\)，失败。
+\end{enumerate}
+
+\noindent 唯一可行的解为：
+$$
+z = 16, \quad y = 11.
+$$
+
+\noindent 验证式二：
+$$
+y\,(z^2 - 225) \;=\; 11\,\bigl(16^2 - 225\bigr)
+\;=\; 11\,(256 - 225)
+\;=\; 11 \times 31
+\;=\; 341.
+$$
+完全满足。
+
+\noindent 验证式三：
+$$
+z\,(225 - y^2) \;=\; 16\,\bigl(225 - 121\bigr)
+\;=\; 16 \times 104
+\;=\; 1664.
+$$
+也完全满足。
+
+\noindent 因此，解为：
+$$
+x = -15, \; y = 11, \; z = 16.
+$$
+
+\newpage
+
+\section{第十题}
+
+\noindent 设 $ABCD$ 是一个凸四边形，面积为 2025，$E$ 是 $AD$ 和 $BC$ 的交点。已知 $\angle AEB = 60^\circ$，且 $AC, BD, AE, BE$ 构成一个递增的等差数列，其公差为 $CE - DE > 0$。求四边形 $ABCD$ 的周长。
+
+
+
+\subsection{解答}
+
+
+\newpage
+
+\end{document}
+
+
