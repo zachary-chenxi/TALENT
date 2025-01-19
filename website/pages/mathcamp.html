@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canada/USA Mathcamp - TALENT</title>
+    <style>
+         /* 复制主页的基础样式 */
+         body {
+            font-family: "Arial", sans-serif;
+            background-color: #FFFFFF;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        header {
+            background-color: #002D72;
+            padding: 3rem 0;
+            color: white;
+            position: relative;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #002D72, #003A90);
+        }
+
+        header::after {
+            display: none;
+        }
+
+        .page-title {
+            font-size: 2.8rem;
+            margin-bottom: 0.8rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.95);
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin-left: -0.2rem;
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 0;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+            margin-left: -0.1rem;
+        }
+
+        h1, h2, h3 {
+            color: #002D72;
+        }
+
+        .year-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            border: none;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .year-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .year-section h2 {
+            font-size: 1.6rem;
+            color: #002D72;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #E1E7F0;
+        }
+
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 0;
+            list-style: none;
+        }
+
+        .resource-list li {
+            margin: 0;
+            list-style-type: none;
+        }
+
+        .resource-list a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border: 2px solid #E1E7F0;
+            border-radius: 8px;
+            color: #002D72;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            background-color: #F8F9FA;
+        }
+
+        .resource-list a:hover {
+            background-color: #002D72;
+            color: white;
+            border-color: #002D72;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #002D72;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 2rem 0;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background-color: #F0F4F8;
+            border: 1px solid #E1E7F0;
+        }
+
+        .back-link:hover {
+            background-color: #002D72;
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .back-link svg {
+            transition: transform 0.3s ease;
+        }
+
+        .back-link:hover svg {
+            transform: translateX(-3px);
+        }
+
+        .back-link span {
+            font-size: 1rem;
+        }
+
+        .intro-text {
+            margin: 2rem 0;
+            line-height: 1.8;
+            color: #2C3E50;
+        }
+
+        .intro-text h2 {
+            font-size: 1.8rem;
+            color: #002D72;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .note {
+            background-color: #F8F9FA;
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 4px solid #002D72;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .note p {
+            margin: 0;
+            color: #2C3E50;
+        }
+
+        .note strong {
+            color: #002D72;
+            font-weight: 600;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+                margin-left: -0.1rem;
+            }
+            
+            .year-section {
+                padding: 1.25rem;
+            }
+            
+            .resource-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #F8F9FA;
+            min-height: 100vh;
+        }
+
+        header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        @media screen and (max-width: 768px) {
+            header {
+                padding: 2rem 0;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="page-title">Canada/USA Mathcamp</h1>
+            <p class="page-subtitle">An intensive summer program for mathematically talented high school students</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="../index.html#summer-courses" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>返回夏校课程</span>
+        </a>
+
+        <div class="intro-text">
+            <h2>项目简介</h2>
+            <p>
+                Canada/USA Mathcamp 是一个为期五周的密集数学夏令营，专为对数学充满热情的高中生设计。项目提供丰富多样的数学课程，
+                从基础理论到前沿研究主题都有涉及。学生可以根据自己的兴趣和水平自由选择课程，在充满活力的学术氛围中探索数学的魅力。
+            </p>
+            
+            <div class="note">
+                <p><strong>申请提示：</strong>以下提供历年入学测试题目及详细解答，供有意向申请的同学参考。请注意，这些测试题目仅供练习使用，实际申请时的题目会有所不同。</p>
+            </div>
+        </div>
+
+        <h2>历年入学测试资料</h2>
+
+        <section class="year-section">
+            <h2>2025年入学测试</h2>
+            <ul class="resource-list">
+                <li><a href="../pdf/mathcamp/2025/test.pdf">入学测试题</a></li>
+                <li><a href="../pdf/mathcamp/2025/solutions.pdf">详细解答</a></li>
+            </ul>
+        </section>
+
+        <section class="year-section">
+            <h2>2024年入学测试</h2>
+            <ul class="resource-list">
+                <li><a href="../pdf/mathcamp/2024/test.pdf">入学测试题</a></li>
+                <li><a href="../pdf/mathcamp/2024/solutions.pdf">详细解答</a></li>
+            </ul>
+        </section>
+
+        <section class="year-section">
+            <h2>2023年入学测试</h2>
+            <ul class="resource-list">
+                <li><a href="../pdf/mathcamp/2023/test.pdf">入学测试题</a></li>
+                <li><a href="../pdf/mathcamp/2023/solutions.pdf">详细解答</a></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html> 
