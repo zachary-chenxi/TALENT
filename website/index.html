@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TALENT 项目</title>
+  <style>
+    /****** 重置与基础样式 ******/
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /*
+      主体背景：白色 (#FFFFFF)
+      文字颜色：深灰 (#333)
+    */
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #FFFFFF;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /*
+      链接颜色：JHU深蓝 (#002D72)
+      悬停时下划线 + 亮一点(#003A90)
+    */
+    a {
+      text-decoration: none;
+      color: #002D72;
+    }
+    a:hover {
+      text-decoration: underline;
+      color: #003A90;
+    }
+
+    /****** 顶部导航 ******/
+    header {
+      background-color: #002D72; /* JHU深蓝 */
+      padding: 0.25rem 0.5rem; /* 减小padding */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #013A83; /* 深一点的蓝边框 */
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
+    .logo-container img {
+      width: 48px; /* 从24px改为48px */
+      height: 48px; /* 从24px改为48px */
+      margin-right: 8px; /* 从4px改为8px，保持比例 */
+      object-fit: contain;
+    }
+    .brand-text {
+      font-size: 1.2rem; /* 稍微增大文字大小，从1rem改为1.2rem */
+      font-weight: bold;
+      color: #FFFFFF;
+    }
+
+    /****** 主体布局 ******/
+    main {
+      display: flex;
+      flex-direction: row;
+      min-height: calc(100vh - 60px);
+    }
+
+    /****** 左侧侧边栏 ******/
+    .sidebar {
+      width: 240px;
+      background-color: #F8F9FA;
+      border-right: 1px solid #DADDE1;
+      padding: 1rem;
+      flex-shrink: 0;
+    }
+    .sidebar h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #002D72;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sidebar ul {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+    .sidebar ul li {
+      margin: 0.5rem 0;
+    }
+    .sidebar ul li a {
+      color: #333;
+      font-size: 0.95rem;
+      padding: 6px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .sidebar ul li a:hover,
+    .sidebar ul li a.active {
+      background-color: #E1E7F0; /* 浅蓝悬停 */
+    }
+
+    /****** 右侧主要内容 ******/
+    .content-wrapper {
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
+      background-color: #FFFFFF;
+    }
+
+    /* .page-content 默认隐藏，仅 #introduction 显示 */
+    .page-content {
+      display: none;
+    }
+    #introduction {
+      display: block; /* 默认显示"简介" */
+    }
+
+    /****** 英雄区域 ******/
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 2rem;
+      background-color: #F2F5FA;
+      border: 1px solid #DADDE1;
+      border-radius: 4px;
+      padding: 1rem;
+    }
+    .hero-text {
+      flex: 1;
+      margin-right: 1rem;
+      min-width: 280px;
+    }
+    .hero-text h1 {
+      font-size: 2rem;
+      color: #002D72;
+      margin-bottom: 0.5rem;
+    }
+    .hero-text p {
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .hero-img {
+      flex: 1;
+      min-width: 280px;
+      text-align: center;
+    }
+    .hero-img img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      border: 1px solid #BCC2CC;
+      object-fit: cover;
+    }
+
+    /****** 标题与段落 ******/
+    h2 {
+      font-size: 1.5rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #002D72; /* 深蓝 */
+    }
+    p {
+      margin: 0.75rem 0;
+      color: #333;
+    }
+
+    /****** 白色卡片区，鼠标悬停时高亮 ******/
+    .cards-section {
+      background-color: #FFFFFF;
+      padding: 2rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      border: 1px solid #E2E2E2; /* 轻微边框 */
+    }
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      background-color: #FFFFFF;
+      border: 1px solid #DDDDDD;
+      border-radius: 6px;
+      padding: 1rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    .card h4 {
+      color: #002D72;
+      margin-bottom: 0.4rem;
+      font-size: 1.1rem;
+    }
+    .card p {
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    /****** PDF展示容器 ******/
+    .pdf-container {
+      margin-top: 1.5rem;
+      border: 1px solid #DADDE1;
+      border-radius: 4px;
+      overflow: hidden;  
+      height: 750px; 
+    }
+    .pdf-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* 小屏幕适配 */
+    @media screen and (max-width: 768px) {
+      main {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #DADDE1;
+      }
+      .content-wrapper {
+        padding: 1rem;
+      }
+      .cards-section {
+        padding: 1rem;
+      }
+      .pdf-container {
+        height: 500px; /* 移动端时可相对调低 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== Header ========== -->
+<header class="header">
+  <div class="header-content">
+    <div class="logo-container">
+      <img src="images/talent-logo.png" alt="Talent Logo" class="logo">
+      <span class="brand-text">TALENT</span>
+    </div>
+  </div>
+</header>
+
+  <main>
+    <!-- 左侧侧边栏导航 -->
+    <aside class="sidebar">
+      <div class="nav-section">
+        <h3>目录</h3>
+        <ul>
+          <li><a href="#" onclick="showSection('introduction')">简介</a></li>
+          <li><a href="#" onclick="showSection('overview')">项目概览</a></li>
+          <li><a href="#" onclick="showSection('al-courses')">AL系列课程</a></li>
+          <li><a href="#" onclick="showSection('admission-courses')">大学入学考课程</a></li>
+          <li><a href="#" onclick="showSection('summer-courses')">夏校课程</a></li>
+          <li><a href="#" onclick="showSection('original-problems')">原创题目</a></li>
+          <li><a href="#" onclick="showSection('contact')">联系方式</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- 右侧主要内容 -->
+    <div class="content-wrapper">
+
+      <!-- ========== 1. 简介 (默认显示) ========== -->
+      <section id="introduction" class="page-content">
+        <section class="hero">
+          <div class="hero-text">
+            <h1>TALENT 项目</h1>
+            <p>深入思考简单的事物</p>
+            <p style="margin-top:0.5rem;font-size:0.9rem;">
+              在这里，你可以充分体验数学与思维的碰撞，激发潜能、拓展视野。
+            </p>
+          </div>
+          <div class="hero-img">
+            <img src="path-to-hero-image.jpg" alt="TALENT合影">
+          </div>
+        </section>
+
+        <h2>简介</h2>
+        <p>
+          TALENT 项目致力于为对数学及相关领域怀抱热情的学生，提供一个高质量、全方位的学习与探索平台。我们的宗旨是鼓励学生通过探究式学习、实战演练以及团队合作来挖掘自身潜能，在深度与广度上提升对数学的理解。
+        </p>
+        <p>
+          项目的核心理念是 "思考、发现、分享" —— 我们希望学员不仅能掌握先进的知识与技能，更能在与同伴的交流中碰撞出思维的火花。无论是基础概念的夯实还是前沿课题的探讨，这里都提供充分的学术自由与鼓励，让你在宽松且具挑战性的环境中收获成长。
+        </p>
+        <p>
+          在这里，你将结识一群志同道合的伙伴，一起探索知识边界，拓展思维格局。欢迎拥有好奇心、热衷挑战的你加入 TALENT 项目，开启一段充满惊喜与收获的学习之旅。
+        </p>
+      </section>
+
+      <!-- ========== 2. 项目概览 ========== -->
+      <section id="overview" class="page-content">
+        <h2>项目概览</h2>
+        <p>
+          我们的核心受众群体是计划申请海外本科的高中生，尤其对数学、理科及综合学术发展有浓厚兴趣。为助力他们在国际舞台上脱颖而出，TALENT 汇集了一批资深导师与丰富资源，专门辅导以下课程与项目：
+        </p>
+
+        <h3>AL 系列课程</h3>
+        <ul style="margin-left: 1.2rem; line-height:1.8;">
+          <li>AL Chemistry</li>
+          <li>AL Mathematics</li>
+          <li>AL Further Mathematics</li>
+          <li>AL Economics</li>
+        </ul>
+        <p>
+          针对 A-Level 体系下的主流理科与经济学科，我们提供精准指导与习题训练，让学生在考试与学科竞赛中表现突出。
+        </p>
+
+        <h3>大学入学考试指导</h3>
+        <ul style="margin-left: 1.2rem; line-height:1.8;">
+          <li>TMUA（Test of Mathematics for University Admission）</li>
+          <li>STEP（Sixth Term Examination Paper）</li>
+          <li>MAT（Mathematics Admissions Test）</li>
+          <li>ESAT（Engineering Science Admissions Test）</li>
+        </ul>
+        <p>
+          这些考试是英国乃至世界多所顶尖大学数学/理科专业的入学门槛。通过系统的练习与模拟，我们帮助学生熟悉试题风格，培养扎实的数学功底与灵活的解题思路。
+        </p>
+
+        <h3>美国夏校准备</h3>
+        <ul style="margin-left: 1.2rem; line-height:1.8;">
+          <li>Ross</li>
+          <li>SUMaC</li>
+          <li>PROMYS</li>
+          <li>Awesome</li>
+          <li>HSMC</li>
+        </ul>
+        <p>
+          这些知名的美国暑期项目，为高中生提供深入探索数学与 STEM 领域的机会，也是未来申请海外名校的重要加分项。我们协助学生在申请与面试环节打造强有力的学术背景与个人特色，让他们获得更高的录取成功率。
+        </p>
+
+        <div class="cards-section">
+          <div class="cards-container">
+            <div class="card">
+              <h4>Participants</h4>
+              <p>Learn more about life and mathematics at TALENT, and how to get involved!</p>
+            </div>
+            <div class="card">
+              <h4>Staff</h4>
+              <p>Discover how to teach or mentor at TALENT, and the application process for counselors.</p>
+            </div>
+            <div class="card">
+              <h4>Mission Statement</h4>
+              <p>Understand the core values and aims driving the TALENT program.</p>
+            </div>
+            <div class="card">
+              <h4>Contribute</h4>
+              <p>Help support TALENT, and empower more students to explore mathematics deeply.</p>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          我们坚信，扎实的数理基础与多角度的思维模式是学生通往未来成功的关键。TALENT 项目全方位覆盖知识、技能与申请规划，为有志于挑战世界一流大学的高中生们打造坚实的起点。
+        </p>
+      </section>
+
+<!-- ========== 夏校课程 ========== -->
+<section id="summer-courses" class="page-content">
+  <h2>夏校课程</h2>
+  
+  <!-- 往期夏校部分 -->
+  <h3>往期夏校</h3>
+  <p>
+    在这里可浏览我们往届夏校的活动回顾、项目成果与学员反馈。
+  </p>
+
+  <h4>Ross Mathematics Programs</h4>
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li><a href="pdf/ross/ross-materials.pdf" target="_blank">Ross 数学营学习资料</a></li>
+  </ul>
+
+  <h4>Stanford University Mathematics Camp (SUMaC)</h4>
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li><a href="pdf/sumac/sumac-materials.pdf" target="_blank">SUMaC 学习资料</a></li>
+  </ul>
+
+  <h4>Program in Mathematics for Young Scientists (PROMYS)</h4>
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li><a href="pdf/promys/promys-materials.pdf" target="_blank">PROMYS 学习资料</a></li>
+  </ul>
+
+  <h4>PRIMES-MIT</h4>
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li><a href="pdf/primes-mit/primes-mit-materials.pdf" target="_blank">PRIMES-MIT 学习资料</a></li>
+  </ul>
+
+  <h4>PRIMES-USA</h4>
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li><a href="pdf/primes-usa/primes-usa-materials.pdf" target="_blank">PRIMES-USA 学习资料</a></li>
+  </ul>
+
+  <h4>MathCamp</h4>
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li><a href="pdf/mathcamp/mathcamp-materials.pdf" target="_blank">MathCamp 学习资料</a></li>
+  </ul>
+
+  <h4>The Hampshire College Summer Studies in Mathematics (HCSSiM)</h4>
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li><a href="pdf/hcssim/hcssim-materials.pdf" target="_blank">HCSSiM 学习资料</a></li>
+  </ul>
+
+  <!-- 夏校答案部分 -->
+  <h3>夏校答案</h3>
+  <p>
+    在这里可浏览往期夏校的各类试题与解答PDF。
+  </p>
+
+  <ul style="margin-left:1.5rem; line-height:1.8;">
+    <li>
+      <strong>2023年夏校答案</strong>
+      <ul>
+        <li><a href="pdf/answers/2023-summer-answers.pdf" target="_blank">2023年夏校答案合集</a></li>
+      </ul>
+    </li>
+    <li>
+      <strong>2022年夏校答案</strong>
+      <ul>
+        <li><a href="pdf/answers/2022-summer-answers.pdf" target="_blank">2022年夏校答案合集</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+      <!-- ========== 5. 原创题目 ========== -->
+      <section id="original-problems" class="page-content">
+        <h2>原创题目</h2>
+        <p>
+          展示团队或学员自己编写的数学题目，挑战思维极限，鼓励在题目设计中体现创造力。
+        </p>
+      </section>
+
+      <!-- ========== 6. 联系方式 ========== -->
+      <section id="contact" class="page-content">
+        <h2>联系方式</h2>
+        <p>
+          如果你对 TALENT 项目感兴趣，或有任何疑问与建议，欢迎通过以下方式联系我们：
+        </p>
+        <ul>
+          <li>微信：TALENT_org</li>
+          <li>小红书：TALENT_org</li>
+        </ul>
+      </section>
+
+      <!-- ========== AL系列课程 ========== -->
+      <section id="al-courses" class="page-content">
+        <h2>AL系列课程</h2>
+        <p>
+          这里收录了我们 AL 系列课程的学习资料、讲义笔记与练习题集。每个主题都经过精心编排，
+          帮助学生系统地掌握进阶数学知识。
+        </p>
+
+        <h3>Pure Mathematics（纯数学）</h3>
+        <ul style="margin-left:1.5rem; line-height:1.8;">
+          <li><a href="pdf/al/pure/calculus.pdf" target="_blank">微积分进阶讲义</a></li>
+          <li><a href="pdf/al/pure/algebra.pdf" target="_blank">代数系统学习笔记</a></li>
+          <li><a href="pdf/al/pure/exercises.pdf" target="_blank">习题集与详解</a></li>
+        </ul>
+
+        <h3>Further Mathematics（进阶数学）</h3>
+        <ul style="margin-left:1.5rem; line-height:1.8;">
+          <li><a href="pdf/al/further/complex.pdf" target="_blank">复变函数基础</a></li>
+          <li><a href="pdf/al/further/mechanics.pdf" target="_blank">力学专题</a></li>
+          <li><a href="pdf/al/further/statistics.pdf" target="_blank">统计学导论</a></li>
+        </ul>
+
+        <h3>Problem Solving（解题技巧）</h3>
+        <ul style="margin-left:1.5rem; line-height:1.8;">
+          <li><a href="pdf/al/problems/methods.pdf" target="_blank">常用解题方法总结</a></li>
+          <li><a href="pdf/al/problems/examples.pdf" target="_blank">经典例题解析</a></li>
+        </ul>
+
+        <h3>Past Papers（历年真题）</h3>
+        <ul style="margin-left:1.5rem; line-height:1.8;">
+          <li><a href="pdf/al/papers/2023.pdf" target="_blank">2023年试题与解析</a></li>
+          <li><a href="pdf/al/papers/2022.pdf" target="_blank">2022年试题与解析</a></li>
+        </ul>
+
+        <h3>补充材料</h3>
+        <ul style="margin-left:1.5rem; line-height:1.8;">
+          <li><a href="pdf/al/extra/study-guide.pdf" target="_blank">学习指导手册</a></li>
+          <li><a href="pdf/al/extra/formula.pdf" target="_blank">公式手册</a></li>
+        </ul>
+      </section>
+
+      <!-- ========== 大学入学考课程 ========== -->
+      <section id="admission-courses" class="page-content">
+        <h2>大学入学考课程</h2>
+        <p>
+          这里收录了针对各大顶尖大学数学/理科专业入学考试的备考资料与练习题集。
+          通过系统的训练，帮助学生掌握考试技巧和深入理解数学概念。
+        </p>
+
+      <h3>TMUA（Test of Mathematics for University Admission）</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8;">
+        <li><a href="pdf/admission/tmua/study-guide.pdf" target="_blank">TMUA备考指南</a></li>
+        <li><a href="pdf/admission/tmua/practice.pdf" target="_blank">模拟试题集</a></li>
+        <li><a href="pdf/admission/tmua/solutions.pdf" target="_blank">详细解析</a></li>
+      </ul>
+    
+      <h3>STEP（Sixth Term Examination Paper）</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8;">
+        <li><a href="pdf/admission/step/preparation.pdf" target="_blank">STEP备考策略</a></li>
+        <li><a href="pdf/admission/step/past-papers.pdf" target="_blank">历年真题</a></li>
+        <li><a href="pdf/admission/step/worked-solutions.pdf" target="_blank">答案详解</a></li>
+      </ul>
+    
+      <h3>MAT（Mathematics Admissions Test）</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8;">
+        <li><a href="pdf/admission/mat/guide.pdf" target="_blank">MAT学习指南</a></li>
+        <li><a href="pdf/admission/mat/examples.pdf" target="_blank">典型题型讲解</a></li>
+        <li><a href="pdf/admission/mat/practice-papers.pdf" target="_blank">练习题集</a></li>
+      </ul>
+    
+      <h3>ESAT（Engineering Science Admissions Test）</h3>
+      <ul style="margin-left:1.5rem; line-height:1.8;">
+        <li><a href="pdf/admission/esat/overview.pdf" target="_blank">ESAT考试概述</a></li>
+        <li><a href="pdf/admission/esat/practice-questions.pdf" target="_blank">练习题</a></li>
+        <li><a href="pdf/admission/esat/solutions.pdf" target="_blank">解题指导</a></li>
+      </ul>
+    </section>
+
+    </div>
+  </main>
+
+  <!-- JS：互斥显示指定区块 -->
+  <script>
+    function showSection(sectionId) {
+      // 1. 获取所有 .page-content
+      const allSections = document.querySelectorAll('.page-content');
+      // 2. 全部隐藏
+      allSections.forEach(sec => {
+        sec.style.display = 'none';
+      });
+      // 3. 仅显示点击的那一个
+      const target = document.getElementById(sectionId);
+      if (target) {
+        target.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>
