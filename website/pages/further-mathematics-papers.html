@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Further Mathematics Papers</title>
+  <style>
+    /* 加载动画 */
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid #E1E7F0;
+      border-top-color: #002D72;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* 改进颜色方案 */
+    :root {
+      --primary: #002D72;
+      --primary-light: rgba(0, 45, 114, 0.05);
+      --primary-dark: #001f4f;
+      --accent: #003A90;
+      --text: #333;
+      --text-light: #666;
+      --border: #E1E7F0;
+      --background: #F8F9FA;
+      --white: #FFFFFF;
+      --shadow: rgba(0, 45, 114, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #F8F9FA;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* 顶部导航 */
+    header {
+      background: linear-gradient(135deg, #002D72, #003A90);
+      color: white;
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* 搜索栏 */
+    .search-container {
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      padding: 0 2rem;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 1rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 45, 114, 0.08);
+      border: 1px solid rgba(0, 45, 114, 0.1);
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 1rem 1.2rem;
+      border: 1px solid #E1E7F0;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .filter-select {
+      padding: 1rem 1.2rem;
+      border: 1px solid #E1E7F0;
+      border-radius: 8px;
+      color: #002D72;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .papers-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 2rem 0;
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    .paper-section {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 45, 114, 0.1);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 45, 114, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .paper-section:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0, 45, 114, 0.12);
+      border-color: #002D72;
+    }
+
+    .paper-section h3 {
+      color: #002D72;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #002D72;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .month-tabs {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .month-tab {
+      padding: 0.8rem 1.5rem;
+      border: 1px solid #E1E7F0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+      font-weight: 500;
+      background: #F8F9FA;
+    }
+
+    .month-tab:hover {
+      background: rgba(0, 45, 114, 0.05);
+      border-color: #002D72;
+    }
+
+    .month-tab.active {
+      background: #002D72;
+      color: white;
+      border-color: #002D72;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(0, 45, 114, 0.2);
+    }
+
+    .paper-links {
+      display: grid;
+      gap: 0.8rem;
+      max-height: 160px;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .paper-links.expanded {
+      max-height: 2000px;
+    }
+
+    .show-more-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 1rem;
+      margin-top: 1rem;
+      background: #F8F9FA;
+      border: 1px solid #E1E7F0;
+      border-radius: 8px;
+      color: #002D72;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .show-more-btn:hover {
+      background: rgba(0, 45, 114, 0.05);
+      border-color: #002D72;
+      box-shadow: 0 2px 4px rgba(0, 45, 114, 0.1);
+    }
+
+    .show-more-btn svg {
+      width: 16px;
+      height: 16px;
+      margin-left: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .show-more-btn.expanded svg {
+      transform: rotate(180deg);
+    }
+
+    /* 修改试卷链接的交互效果 */
+    .paper-link {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.2rem;
+      background: #F8F9FA;
+      border: 1px solid #E1E7F0;
+      border-radius: 8px;
+      color: #002D72;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      justify-content: space-between;
+    }
+
+    .paper-link::before {
+      content: '📄';
+      margin-right: 8px;
+      font-size: 1.1em;
+    }
+
+    .paper-link:hover::before {
+      background-position: 100% 0;
+    }
+
+    .paper-link:hover {
+      border-color: #002D72;
+      transform: translateX(8px);
+      box-shadow: 0 4px 8px rgba(0, 45, 114, 0.15);
+    }
+
+    /* 添加图标 */
+    .paper-link::after {
+      content: '→';
+      position: absolute;
+      right: 1.2rem;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s ease;
+    }
+
+    .paper-link:hover::after {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* 添加波纹效果 */
+    .paper-link .ripple {
+      position: absolute;
+      border-radius: 50%;
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      background-color: rgba(0, 45, 114, 0.1);
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* 优化移动端显示 */
+    @media screen and (max-width: 768px) {
+      .header-content {
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .header-content h1 {
+        font-size: 1.5rem;
+      }
+
+      .header-content p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .search-box {
+        flex-direction: column;
+        padding: 1rem;
+        margin: 0 1rem;
+      }
+
+      .search-input,
+      .filter-select {
+        width: 100%;
+        font-size: 0.95rem;
+      }
+
+      .papers-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1rem;
+      }
+
+      .paper-section {
+        padding: 1.5rem;
+        margin: 0 1rem;
+        border-radius: 12px;
+      }
+
+      .month-tabs {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .month-tab {
+        flex: 1;
+        min-width: 120px;
+        padding: 0.6rem 1rem;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      .paper-link {
+        padding: 0.8rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .show-more-btn {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* 优化搜索框样式 */
+    .search-input:focus,
+    .filter-select:focus {
+      outline: none;
+      border-color: #002D72;
+      box-shadow: 0 0 0 3px rgba(0, 45, 114, 0.1);
+    }
+
+    /* 添加页面过渡动画 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* 添加更多交互效果 */
+    .paper-section::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                                rgba(0, 45, 114, 0.05) 0%, 
+                                transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .paper-section:hover::after {
+      opacity: 1;
+    }
+
+    /* 优化搜索框交互 */
+    .search-box {
+      position: sticky;
+      top: 1rem;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .search-box:focus-within {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    /* 添加文件大小样式 */
+    .paper-size {
+      font-size: 0.85em;
+      color: var(--text-light);
+      opacity: 0.8;
+    }
+
+    /* 添加加载状态样式 */
+    .paper-link.loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .paper-link.loading::after {
+      content: '';
+      position: absolute;
+      right: 1.2rem;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--primary);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <h1>Further Mathematics Papers</h1>
+      <p>FP1 | FP2 | FP3 | M2 | M3 | S2 | S3 试卷与解析</p>
+    </div>
+  </header>
+
+  <div class="search-container">
+    <div class="search-box">
+      <input type="text" class="search-input" placeholder="搜索试卷...">
+      <select class="filter-select">
+        <option value="all">全部年份</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+        <option value="2017">2017</option>
+        <option value="2016">2016</option>
+        <option value="2015">2015</option>
+        <option value="2014">2014</option>
+        <option value="2013">2013</option>
+        <option value="2012">2012</option>
+        <option value="2011">2011</option>
+        <option value="2010">2010</option>
+        <option value="2009">2009</option>
+        <option value="2008">2008</option>
+        <option value="2007">2007</option>
+        <option value="2006">2006</option>
+        <option value="2005">2005</option>
+      </select>
+      <select class="filter-select">
+        <option value="all">全部章节</option>
+        <option value="Further Mathematics 1">Further Mathematics 1</option>
+        <option value="Further Mathematics 2">Further Mathematics 2</option>
+        <option value="Further Mathematics 3">Further Mathematics 3</option>
+        <option value="Mechanics 2">Mechanics 2</option>
+        <option value="Mechanics 3">Mechanics 3</option>
+        <option value="Statistics 2">Statistics 2</option>
+        <option value="Statistics 3">Statistics 3</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="papers-container">
+      <!-- P1 Section -->
+      <div class="paper-section">
+        <h3>Further Mathematics 1</h3>
+        <div class="month-tabs">
+          <div class="month-tab active">January</div>
+          <div class="month-tab">June</div>
+        </div>
+        <div class="paper-links january-papers">
+          <a href="/papers/further-mathematics/fp1/2020/jan/question-paper.pdf" class="paper-link">
+            <span>2020年1月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2020/jan/mark-scheme.pdf" class="paper-link">
+            <span>2020年1月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2019/jan/question-paper.pdf" class="paper-link">
+            <span>2019年1月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2019/jan/mark-scheme.pdf" class="paper-link">
+            <span>2019年1月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2018/jan/question-paper.pdf" class="paper-link">
+            <span>2018年1月 试卷</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2018/jan/mark-scheme.pdf" class="paper-link">
+            <span>2018年1月 解析</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2017/jan/question-paper.pdf" class="paper-link">
+            <span>2017年1月 试卷</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2017/jan/mark-scheme.pdf" class="paper-link">
+            <span>2017年1月 解析</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2016/jan/question-paper.pdf" class="paper-link">
+            <span>2016年1月 试卷</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2016/jan/mark-scheme.pdf" class="paper-link">
+            <span>2016年1月 解析</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2015/jan/question-paper.pdf" class="paper-link">
+            <span>2015年1月 试卷</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2015/jan/mark-scheme.pdf" class="paper-link">
+            <span>2015年1月 解析</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2014/jan/question-paper.pdf" class="paper-link">
+            <span>2014年1月 试卷</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2014/jan/mark-scheme.pdf" class="paper-link">
+            <span>2014年1月 解析</span>
+            <span class="paper-size">1.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2013/jan/question-paper.pdf" class="paper-link">
+            <span>2013年1月 试卷</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2013/jan/mark-scheme.pdf" class="paper-link">
+            <span>2013年1月 解析</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2012/jan/question-paper.pdf" class="paper-link">
+            <span>2012年1月 试卷</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2012/jan/mark-scheme.pdf" class="paper-link">
+            <span>2012年1月 解析</span>
+            <span class="paper-size">1.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2011/jan/question-paper.pdf" class="paper-link">
+            <span>2011年1月 试卷</span>
+            <span class="paper-size">1.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2011/jan/mark-scheme.pdf" class="paper-link">
+            <span>2011年1月 解析</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2010/jan/question-paper.pdf" class="paper-link">
+            <span>2010年1月 试卷</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2010/jan/mark-scheme.pdf" class="paper-link">
+            <span>2010年1月 解析</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2009/jan/question-paper.pdf" class="paper-link">
+            <span>2009年1月 试卷</span>
+            <span class="paper-size">1.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2009/jan/mark-scheme.pdf" class="paper-link">
+            <span>2009年1月 解析</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2008/jan/question-paper.pdf" class="paper-link">
+            <span>2008年1月 试卷</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2008/jan/mark-scheme.pdf" class="paper-link">
+            <span>2008年1月 解析</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2007/jan/question-paper.pdf" class="paper-link">
+            <span>2007年1月 试卷</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2007/jan/mark-scheme.pdf" class="paper-link">
+            <span>2007年1月 解析</span>
+            <span class="paper-size">0.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2006/jan/question-paper.pdf" class="paper-link">
+            <span>2006年1月 试卷</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2006/jan/mark-scheme.pdf" class="paper-link">
+            <span>2006年1月 解析</span>
+            <span class="paper-size">0.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2005/jan/question-paper.pdf" class="paper-link">
+            <span>2005年1月 试卷</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2005/jan/mark-scheme.pdf" class="paper-link">
+            <span>2005年1月 解析</span>
+            <span class="paper-size">0.3 MB</span>
+          </a>
+        </div>
+        <button class="show-more-btn">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="paper-links june-papers" style="display: none;">
+          <a href="/papers/further-mathematics/fp1/2020/jun/question-paper.pdf" class="paper-link">
+            <span>2020年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2020/jun/mark-scheme.pdf" class="paper-link">
+            <span>2020年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2019/jun/question-paper.pdf" class="paper-link">
+            <span>2019年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2019/jun/mark-scheme.pdf" class="paper-link">
+            <span>2019年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2018/jun/question-paper.pdf" class="paper-link">
+            <span>2018年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2018/jun/mark-scheme.pdf" class="paper-link">
+            <span>2018年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2017/jun/question-paper.pdf" class="paper-link">
+            <span>2017年6月 试卷</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2017/jun/mark-scheme.pdf" class="paper-link">
+            <span>2017年6月 解析</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2016/jun/question-paper.pdf" class="paper-link">
+            <span>2016年6月 试卷</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2016/jun/mark-scheme.pdf" class="paper-link">
+            <span>2016年6月 解析</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2015/jun/question-paper.pdf" class="paper-link">
+            <span>2015年6月 试卷</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2015/jun/mark-scheme.pdf" class="paper-link">
+            <span>2015年6月 解析</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2014/jun/question-paper.pdf" class="paper-link">
+            <span>2014年6月 试卷</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2014/jun/mark-scheme.pdf" class="paper-link">
+            <span>2014年6月 解析</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2013/jun/question-paper.pdf" class="paper-link">
+            <span>2013年6月 试卷</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2013/jun/mark-scheme.pdf" class="paper-link">
+            <span>2013年6月 解析</span>
+            <span class="paper-size">1.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2012/jun/question-paper.pdf" class="paper-link">
+            <span>2012年6月 试卷</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2012/jun/mark-scheme.pdf" class="paper-link">
+            <span>2012年6月 解析</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2011/jun/question-paper.pdf" class="paper-link">
+            <span>2011年6月 试卷</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2011/jun/mark-scheme.pdf" class="paper-link">
+            <span>2011年6月 解析</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2010/jun/question-paper.pdf" class="paper-link">
+            <span>2010年6月 试卷</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2010/jun/mark-scheme.pdf" class="paper-link">
+            <span>2010年6月 解析</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2009/jun/question-paper.pdf" class="paper-link">
+            <span>2009年6月 试卷</span>
+            <span class="paper-size">1.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2009/jun/mark-scheme.pdf" class="paper-link">
+            <span>2009年6月 解析</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2008/jun/question-paper.pdf" class="paper-link">
+            <span>2008年6月 试卷</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2008/jun/mark-scheme.pdf" class="paper-link">
+            <span>2008年6月 解析</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2007/jun/question-paper.pdf" class="paper-link">
+            <span>2007年6月 试卷</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2007/jun/mark-scheme.pdf" class="paper-link">
+            <span>2007年6月 解析</span>
+            <span class="paper-size">0.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2006/jun/question-paper.pdf" class="paper-link">
+            <span>2006年6月 试卷</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2006/jun/mark-scheme.pdf" class="paper-link">
+            <span>2006年6月 解析</span>
+            <span class="paper-size">0.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2005/jun/question-paper.pdf" class="paper-link">
+            <span>2005年6月 试卷</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp1/2005/jun/mark-scheme.pdf" class="paper-link">
+            <span>2005年6月 解析</span>
+            <span class="paper-size">0.3 MB</span>
+          </a>
+        </div>
+        <button class="show-more-btn" style="display: none;">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- P2 Section -->
+      <div class="paper-section">
+        <h3>Further Mathematics 2</h3>
+        <div class="month-tabs">
+          <div class="month-tab active">January</div>
+          <div class="month-tab">June</div>
+        </div>
+        <div class="paper-links january-papers">
+          <a href="/papers/further-mathematics/fp2/2020/jan/question-paper.pdf" class="paper-link">
+            <span>2020年1月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2020/jan/mark-scheme.pdf" class="paper-link">
+            <span>2020年1月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2019/jan/question-paper.pdf" class="paper-link">
+            <span>2019年1月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2019/jan/mark-scheme.pdf" class="paper-link">
+            <span>2019年1月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2018/jan/question-paper.pdf" class="paper-link">
+            <span>2018年1月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2018/jan/mark-scheme.pdf" class="paper-link">
+            <span>2018年1月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2017/jan/question-paper.pdf" class="paper-link">
+            <span>2017年1月 试卷</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2017/jan/mark-scheme.pdf" class="paper-link">
+            <span>2017年1月 解析</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2016/jan/question-paper.pdf" class="paper-link">
+            <span>2016年1月 试卷</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2016/jan/mark-scheme.pdf" class="paper-link">
+            <span>2016年1月 解析</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2015/jan/question-paper.pdf" class="paper-link">
+            <span>2015年1月 试卷</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2015/jan/mark-scheme.pdf" class="paper-link">
+            <span>2015年1月 解析</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2014/jan/question-paper.pdf" class="paper-link">
+            <span>2014年1月 试卷</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2014/jan/mark-scheme.pdf" class="paper-link">
+            <span>2014年1月 解析</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2013/jan/question-paper.pdf" class="paper-link">
+            <span>2013年1月 试卷</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2013/jan/mark-scheme.pdf" class="paper-link">
+            <span>2013年1月 解析</span>
+            <span class="paper-size">1.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2012/jan/question-paper.pdf" class="paper-link">
+            <span>2012年1月 试卷</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2012/jan/mark-scheme.pdf" class="paper-link">
+            <span>2012年1月 解析</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2011/jan/question-paper.pdf" class="paper-link">
+            <span>2011年1月 试卷</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2011/jan/mark-scheme.pdf" class="paper-link">
+            <span>2011年1月 解析</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2010/jan/question-paper.pdf" class="paper-link">
+            <span>2010年1月 试卷</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2010/jan/mark-scheme.pdf" class="paper-link">
+            <span>2010年1月 解析</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2009/jan/question-paper.pdf" class="paper-link">
+            <span>2009年1月 试卷</span>
+            <span class="paper-size">1.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2009/jan/mark-scheme.pdf" class="paper-link">
+            <span>2009年1月 解析</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2008/jan/question-paper.pdf" class="paper-link">
+            <span>2008年1月 试卷</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2008/jan/mark-scheme.pdf" class="paper-link">
+            <span>2008年1月 解析</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2007/jan/question-paper.pdf" class="paper-link">
+            <span>2007年1月 试卷</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2007/jan/mark-scheme.pdf" class="paper-link">
+            <span>2007年1月 解析</span>
+            <span class="paper-size">0.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2006/jan/question-paper.pdf" class="paper-link">
+            <span>2006年1月 试卷</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2006/jan/mark-scheme.pdf" class="paper-link">
+            <span>2006年1月 解析</span>
+            <span class="paper-size">0.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2005/jan/question-paper.pdf" class="paper-link">
+            <span>2005年1月 试卷</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2005/jan/mark-scheme.pdf" class="paper-link">
+            <span>2005年1月 解析</span>
+            <span class="paper-size">0.3 MB</span>
+          </a>
+        </div>
+        <button class="show-more-btn">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="paper-links june-papers" style="display: none;">
+          <a href="/papers/further-mathematics/fp2/2020/jun/question-paper.pdf" class="paper-link">
+            <span>2020年6月 试卷</span>
+            <span class="paper-size">2.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2020/jun/mark-scheme.pdf" class="paper-link">
+            <span>2020年6月 解析</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2019/jun/question-paper.pdf" class="paper-link">
+            <span>2019年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2019/jun/mark-scheme.pdf" class="paper-link">
+            <span>2019年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2018/jun/question-paper.pdf" class="paper-link">
+            <span>2018年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2018/jun/mark-scheme.pdf" class="paper-link">
+            <span>2018年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2017/jun/question-paper.pdf" class="paper-link">
+            <span>2017年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2017/jun/mark-scheme.pdf" class="paper-link">
+            <span>2017年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2016/jun/question-paper.pdf" class="paper-link">
+            <span>2016年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2016/jun/mark-scheme.pdf" class="paper-link">
+            <span>2016年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2015/jun/question-paper.pdf" class="paper-link">
+            <span>2015年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2015/jun/mark-scheme.pdf" class="paper-link">
+            <span>2015年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2014/jun/question-paper.pdf" class="paper-link">
+            <span>2014年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2014/jun/mark-scheme.pdf" class="paper-link">
+            <span>2014年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2013/jun/question-paper.pdf" class="paper-link">
+            <span>2013年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2013/jun/mark-scheme.pdf" class="paper-link">
+            <span>2013年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2012/jun/question-paper.pdf" class="paper-link">
+            <span>2012年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2012/jun/mark-scheme.pdf" class="paper-link">
+            <span>2012年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2011/jun/question-paper.pdf" class="paper-link">
+            <span>2011年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2011/jun/mark-scheme.pdf" class="paper-link">
+            <span>2011年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2010/jun/question-paper.pdf" class="paper-link">
+            <span>2010年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2010/jun/mark-scheme.pdf" class="paper-link">
+            <span>2010年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2009/jun/question-paper.pdf" class="paper-link">
+            <span>2009年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2009/jun/mark-scheme.pdf" class="paper-link">
+            <span>2009年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2008/jun/question-paper.pdf" class="paper-link">
+            <span>2008年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2008/jun/mark-scheme.pdf" class="paper-link">
+            <span>2008年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2007/jun/question-paper.pdf" class="paper-link">
+            <span>2007年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2007/jun/mark-scheme.pdf" class="paper-link">
+            <span>2007年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2006/jun/question-paper.pdf" class="paper-link">
+            <span>2006年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2006/jun/mark-scheme.pdf" class="paper-link">
+            <span>2006年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2005/jun/question-paper.pdf" class="paper-link">
+            <span>2005年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp2/2005/jun/mark-scheme.pdf" class="paper-link">
+            <span>2005年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+        </div>
+        <button class="show-more-btn" style="display: none;">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- P3 Section -->
+      <div class="paper-section">
+        <h3>Further Mathematics 3</h3>
+        <div class="month-tabs">
+          <div class="month-tab active">January</div>
+          <div class="month-tab">June</div>
+        </div>
+        <div class="paper-links january-papers">
+          <a href="/papers/further-mathematics/fp3/2020/jan/question-paper.pdf" class="paper-link">
+            <span>2020年1月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2020/jan/mark-scheme.pdf" class="paper-link">
+            <span>2020年1月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2019/jan/question-paper.pdf" class="paper-link">
+            <span>2019年1月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2019/jan/mark-scheme.pdf" class="paper-link">
+            <span>2019年1月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2018/jan/question-paper.pdf" class="paper-link">
+            <span>2018年1月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2018/jan/mark-scheme.pdf" class="paper-link">
+            <span>2018年1月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2017/jan/question-paper.pdf" class="paper-link">
+            <span>2017年1月 试卷</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2017/jan/mark-scheme.pdf" class="paper-link">
+            <span>2017年1月 解析</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2016/jan/question-paper.pdf" class="paper-link">
+            <span>2016年1月 试卷</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2016/jan/mark-scheme.pdf" class="paper-link">
+            <span>2016年1月 解析</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2015/jan/question-paper.pdf" class="paper-link">
+            <span>2015年1月 试卷</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2015/jan/mark-scheme.pdf" class="paper-link">
+            <span>2015年1月 解析</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2014/jan/question-paper.pdf" class="paper-link">
+            <span>2014年1月 试卷</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2014/jan/mark-scheme.pdf" class="paper-link">
+            <span>2014年1月 解析</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2013/jan/question-paper.pdf" class="paper-link">
+            <span>2013年1月 试卷</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2013/jan/mark-scheme.pdf" class="paper-link">
+            <span>2013年1月 解析</span>
+            <span class="paper-size">1.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2012/jan/question-paper.pdf" class="paper-link">
+            <span>2012年1月 试卷</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2012/jan/mark-scheme.pdf" class="paper-link">
+            <span>2012年1月 解析</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2011/jan/question-paper.pdf" class="paper-link">
+            <span>2011年1月 试卷</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2011/jan/mark-scheme.pdf" class="paper-link">
+            <span>2011年1月 解析</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2010/jan/question-paper.pdf" class="paper-link">
+            <span>2010年1月 试卷</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2010/jan/mark-scheme.pdf" class="paper-link">
+            <span>2010年1月 解析</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2009/jan/question-paper.pdf" class="paper-link">
+            <span>2009年1月 试卷</span>
+            <span class="paper-size">1.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2009/jan/mark-scheme.pdf" class="paper-link">
+            <span>2009年1月 解析</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2008/jan/question-paper.pdf" class="paper-link">
+            <span>2008年1月 试卷</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2008/jan/mark-scheme.pdf" class="paper-link">
+            <span>2008年1月 解析</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2007/jan/question-paper.pdf" class="paper-link">
+            <span>2007年1月 试卷</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2007/jan/mark-scheme.pdf" class="paper-link">
+            <span>2007年1月 解析</span>
+            <span class="paper-size">0.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2006/jan/question-paper.pdf" class="paper-link">
+            <span>2006年1月 试卷</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2006/jan/mark-scheme.pdf" class="paper-link">
+            <span>2006年1月 解析</span>
+            <span class="paper-size">0.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2005/jan/question-paper.pdf" class="paper-link">
+            <span>2005年1月 试卷</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2005/jan/mark-scheme.pdf" class="paper-link">
+            <span>2005年1月 解析</span>
+            <span class="paper-size">0.3 MB</span>
+          </a>
+        </div>
+        <button class="show-more-btn">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="paper-links june-papers" style="display: none;">
+          <a href="/papers/further-mathematics/fp3/2020/jun/question-paper.pdf" class="paper-link">
+            <span>2020年6月 试卷</span>
+            <span class="paper-size">2.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2020/jun/mark-scheme.pdf" class="paper-link">
+            <span>2020年6月 解析</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2019/jun/question-paper.pdf" class="paper-link">
+            <span>2019年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2019/jun/mark-scheme.pdf" class="paper-link">
+            <span>2019年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2018/jun/question-paper.pdf" class="paper-link">
+            <span>2018年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2018/jun/mark-scheme.pdf" class="paper-link">
+            <span>2018年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2017/jun/question-paper.pdf" class="paper-link">
+            <span>2017年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2017/jun/mark-scheme.pdf" class="paper-link">
+            <span>2017年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2016/jun/question-paper.pdf" class="paper-link">
+            <span>2016年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2016/jun/mark-scheme.pdf" class="paper-link">
+            <span>2016年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2015/jun/question-paper.pdf" class="paper-link">
+            <span>2015年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2015/jun/mark-scheme.pdf" class="paper-link">
+            <span>2015年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2014/jun/question-paper.pdf" class="paper-link">
+            <span>2014年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2014/jun/mark-scheme.pdf" class="paper-link">
+            <span>2014年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2013/jun/question-paper.pdf" class="paper-link">
+            <span>2013年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2013/jun/mark-scheme.pdf" class="paper-link">
+            <span>2013年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2012/jun/question-paper.pdf" class="paper-link">
+            <span>2012年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2012/jun/mark-scheme.pdf" class="paper-link">
+            <span>2012年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2011/jun/question-paper.pdf" class="paper-link">
+            <span>2011年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2011/jun/mark-scheme.pdf" class="paper-link">
+            <span>2011年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2010/jun/question-paper.pdf" class="paper-link">
+            <span>2010年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2010/jun/mark-scheme.pdf" class="paper-link">
+            <span>2010年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2009/jun/question-paper.pdf" class="paper-link">
+            <span>2009年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2009/jun/mark-scheme.pdf" class="paper-link">
+            <span>2009年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2008/jun/question-paper.pdf" class="paper-link">
+            <span>2008年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2008/jun/mark-scheme.pdf" class="paper-link">
+            <span>2008年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2007/jun/question-paper.pdf" class="paper-link">
+            <span>2007年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2007/jun/mark-scheme.pdf" class="paper-link">
+            <span>2007年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2006/jun/question-paper.pdf" class="paper-link">
+            <span>2006年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2006/jun/mark-scheme.pdf" class="paper-link">
+            <span>2006年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2005/jun/question-paper.pdf" class="paper-link">
+            <span>2005年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/fp3/2005/jun/mark-scheme.pdf" class="paper-link">
+            <span>2005年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+        </div>
+        <button class="show-more-btn" style="display: none;">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- C1 Section -->
+      <div class="paper-section">
+        <h3>Mechanics 2</h3>
+        <div class="month-tabs">
+          <div class="month-tab active">January</div>
+          <div class="month-tab">June</div>
+        </div>
+        <div class="paper-links january-papers">
+          <a href="/papers/further-mathematics/m2/2020/jan/question-paper.pdf" class="paper-link">
+            <span>2020年1月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2020/jan/mark-scheme.pdf" class="paper-link">
+            <span>2020年1月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2019/jan/question-paper.pdf" class="paper-link">
+            <span>2019年1月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2019/jan/mark-scheme.pdf" class="paper-link">
+            <span>2019年1月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2018/jan/question-paper.pdf" class="paper-link">
+            <span>2018年1月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2018/jan/mark-scheme.pdf" class="paper-link">
+            <span>2018年1月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2017/jan/question-paper.pdf" class="paper-link">
+            <span>2017年1月 试卷</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2017/jan/mark-scheme.pdf" class="paper-link">
+            <span>2017年1月 解析</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2016/jan/question-paper.pdf" class="paper-link">
+            <span>2016年1月 试卷</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2016/jan/mark-scheme.pdf" class="paper-link">
+            <span>2016年1月 解析</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2015/jan/question-paper.pdf" class="paper-link">
+            <span>2015年1月 试卷</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2015/jan/mark-scheme.pdf" class="paper-link">
+            <span>2015年1月 解析</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2014/jan/question-paper.pdf" class="paper-link">
+            <span>2014年1月 试卷</span>
+            <span class="paper-size">1.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2014/jan/mark-scheme.pdf" class="paper-link">
+            <span>2014年1月 解析</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2013/jan/question-paper.pdf" class="paper-link">
+            <span>2013年1月 试卷</span>
+            <span class="paper-size">1.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2013/jan/mark-scheme.pdf" class="paper-link">
+            <span>2013年1月 解析</span>
+            <span class="paper-size">1.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2012/jan/question-paper.pdf" class="paper-link">
+            <span>2012年1月 试卷</span>
+            <span class="paper-size">1.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2012/jan/mark-scheme.pdf" class="paper-link">
+            <span>2012年1月 解析</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2011/jan/question-paper.pdf" class="paper-link">
+            <span>2011年1月 试卷</span>
+            <span class="paper-size">1.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2011/jan/mark-scheme.pdf" class="paper-link">
+            <span>2011年1月 解析</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2010/jan/question-paper.pdf" class="paper-link">
+            <span>2010年1月 试卷</span>
+            <span class="paper-size">1.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2010/jan/mark-scheme.pdf" class="paper-link">
+            <span>2010年1月 解析</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2009/jan/question-paper.pdf" class="paper-link">
+            <span>2009年1月 试卷</span>
+            <span class="paper-size">1.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2009/jan/mark-scheme.pdf" class="paper-link">
+            <span>2009年1月 解析</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2008/jan/question-paper.pdf" class="paper-link">
+            <span>2008年1月 试卷</span>
+            <span class="paper-size">0.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2008/jan/mark-scheme.pdf" class="paper-link">
+            <span>2008年1月 解析</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2007/jan/question-paper.pdf" class="paper-link">
+            <span>2007年1月 试卷</span>
+            <span class="paper-size">0.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2007/jan/mark-scheme.pdf" class="paper-link">
+            <span>2007年1月 解析</span>
+            <span class="paper-size">0.5 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2006/jan/question-paper.pdf" class="paper-link">
+            <span>2006年1月 试卷</span>
+            <span class="paper-size">0.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2006/jan/mark-scheme.pdf" class="paper-link">
+            <span>2006年1月 解析</span>
+            <span class="paper-size">0.4 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2005/jan/question-paper.pdf" class="paper-link">
+            <span>2005年1月 试卷</span>
+            <span class="paper-size">0.6 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2005/jan/mark-scheme.pdf" class="paper-link">
+            <span>2005年1月 解析</span>
+            <span class="paper-size">0.3 MB</span>
+          </a>
+        </div>
+        <button class="show-more-btn">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="paper-links june-papers" style="display: none;">
+          <a href="/papers/further-mathematics/m2/2020/jun/question-paper.pdf" class="paper-link">
+            <span>2020年6月 试卷</span>
+            <span class="paper-size">2.3 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2020/jun/mark-scheme.pdf" class="paper-link">
+            <span>2020年6月 解析</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2019/jun/question-paper.pdf" class="paper-link">
+            <span>2019年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2019/jun/mark-scheme.pdf" class="paper-link">
+            <span>2019年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2018/jun/question-paper.pdf" class="paper-link">
+            <span>2018年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2018/jun/mark-scheme.pdf" class="paper-link">
+            <span>2018年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2017/jun/question-paper.pdf" class="paper-link">
+            <span>2017年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2017/jun/mark-scheme.pdf" class="paper-link">
+            <span>2017年6月 解析</span>
+            <span class="paper-size">1.7 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2016/jun/question-paper.pdf" class="paper-link">
+            <span>2016年6月 试卷</span>
+            <span class="paper-size">2.2 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2016/jun/mark-scheme.pdf" class="paper-link">
+            <span>2016年6月 解析</span>
+            <span class="paper-size">1.9 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2015/jun/question-paper.pdf" class="paper-link">
+            <span>2015年6月 试卷</span>
+            <span class="paper-size">2.1 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2015/jun/mark-scheme.pdf" class="paper-link">
+            <span>2015年6月 解析</span>
+            <span class="paper-size">1.8 MB</span>
+          </a>
+          <a href="/papers/further-mathematics/m2/2014/jun/question-paper.pdf" class="paper-link">
+            <span>2014年6月 试卷</span>
+            <span class="paper-size">2.0 MB</span>
+          </a>
+          <a href="#" class="paper-link">2020年6月 试卷</a>
+          <a href="#" class="paper-link">2020年6月 解析</a>
+          <a href="#" class="paper-link">2019年6月 试卷</a>
+          <a href="#" class="paper-link">2019年6月 解析</a>
+          <a href="#" class="paper-link">2018年6月 试卷</a>
+          <a href="#" class="paper-link">2018年6月 解析</a>
+          <a href="#" class="paper-link">2017年6月 试卷</a>
+          <a href="#" class="paper-link">2017年6月 解析</a>
+          <a href="#" class="paper-link">2016年6月 试卷</a>
+          <a href="#" class="paper-link">2016年6月 解析</a>
+          <a href="#" class="paper-link">2015年6月 试卷</a>
+          <a href="#" class="paper-link">2015年6月 解析</a>
+          <a href="#" class="paper-link">2014年6月 试卷</a>
+          <a href="#" class="paper-link">2014年6月 解析</a>
+          <a href="#" class="paper-link">2013年6月 试卷</a>
+          <a href="#" class="paper-link">2013年6月 解析</a>
+          <a href="#" class="paper-link">2012年6月 试卷</a>
+          <a href="#" class="paper-link">2012年6月 解析</a>
+          <a href="#" class="paper-link">2011年6月 试卷</a>
+          <a href="#" class="paper-link">2011年6月 解析</a>
+          <a href="#" class="paper-link">2010年6月 试卷</a>
+          <a href="#" class="paper-link">2010年6月 解析</a>
+          <a href="#" class="paper-link">2009年6月 试卷</a>
+          <a href="#" class="paper-link">2009年6月 解析</a>
+          <a href="#" class="paper-link">2008年6月 试卷</a>
+          <a href="#" class="paper-link">2008年6月 解析</a>
+          <a href="#" class="paper-link">2007年6月 试卷</a>
+          <a href="#" class="paper-link">2007年6月 解析</a>
+          <a href="#" class="paper-link">2006年6月 试卷</a>
+          <a href="#" class="paper-link">2006年6月 解析</a>
+          <a href="#" class="paper-link">2005年6月 试卷</a>
+          <a href="#" class="paper-link">2005年6月 解析</a>
+        </div>
+        <button class="show-more-btn" style="display: none;">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- C2 Section -->
+      <div class="paper-section">
+        <h3>Mechanics 3</h3>
+        <div class="month-tabs">
+          <div class="month-tab active">January</div>
+          <div class="month-tab">June</div>
+        </div>
+        <div class="paper-links january-papers">
+          <a href="#" class="paper-link">2020年1月 试卷</a>
+          <a href="#" class="paper-link">2020年1月 解析</a>
+          <a href="#" class="paper-link">2019年1月 试卷</a>
+          <a href="#" class="paper-link">2019年1月 解析</a>
+          <a href="#" class="paper-link">2018年1月 试卷</a>
+          <a href="#" class="paper-link">2018年1月 解析</a>
+          <a href="#" class="paper-link">2017年1月 试卷</a>
+          <a href="#" class="paper-link">2017年1月 解析</a>
+          <a href="#" class="paper-link">2016年1月 试卷</a>
+          <a href="#" class="paper-link">2016年1月 解析</a>
+          <a href="#" class="paper-link">2015年1月 试卷</a>
+          <a href="#" class="paper-link">2015年1月 解析</a>
+          <a href="#" class="paper-link">2014年1月 试卷</a>
+          <a href="#" class="paper-link">2014年1月 解析</a>
+          <a href="#" class="paper-link">2013年1月 试卷</a>
+          <a href="#" class="paper-link">2013年1月 解析</a>
+          <a href="#" class="paper-link">2012年1月 试卷</a>
+          <a href="#" class="paper-link">2012年1月 解析</a>
+          <a href="#" class="paper-link">2011年1月 试卷</a>
+          <a href="#" class="paper-link">2011年1月 解析</a>
+          <a href="#" class="paper-link">2010年1月 试卷</a>
+          <a href="#" class="paper-link">2010年1月 解析</a>
+          <a href="#" class="paper-link">2009年1月 试卷</a>
+          <a href="#" class="paper-link">2009年1月 解析</a>
+          <a href="#" class="paper-link">2008年1月 试卷</a>
+          <a href="#" class="paper-link">2008年1月 解析</a>
+          <a href="#" class="paper-link">2007年1月 试卷</a>
+          <a href="#" class="paper-link">2007年1月 解析</a>
+          <a href="#" class="paper-link">2006年1月 试卷</a>
+          <a href="#" class="paper-link">2006年1月 解析</a>
+          <a href="#" class="paper-link">2005年1月 试卷</a>
+          <a href="#" class="paper-link">2005年1月 解析</a>
+        </div>
+        <button class="show-more-btn">
+          显示更多年份
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </button>
+        <div class="paper-links june-papers" style="display: none;">
+          <a href="#" class="paper-link">2020年6月 试卷</a>
+          <a href="#" class="paper-link">2020年6月 解析</a>
+          <a href="#" class="paper-link">2019年6月 试卷</a>
+          <a href="#" class="paper-link">2019年6月 解析</a>
+          <a href="#" class="paper-link">2018年6月 试卷</a>
+          <a href="#" class="paper-link">2018年6月 解析</a>
+          <a href="#" class="paper-link">2017年6月 试卷</a>
+          <a href="#" class="paper-link">2017年6月 解析</a>
+          <a href="#" class="paper-link">2016年6月 试卷</a>
+          <a href="#" class="paper-link">2016年6月 解析</a>
+          <a href="#" class="paper-link">2015年6月 试卷</a>
+          <a href="#" class="paper-link">2015年6月 解析</a>
+          <a href="#" class="paper-link">2014年6月 试卷</a>
+          <a href="#" class="paper-link">2014年6月 解析</a>
+          <a href="#" class="paper-link">2013年6月 试卷</a>
+          <a href="#" class="paper-link">2013年6月 解析</a>
+          <a href="#" class="paper-link">2012年6月 试卷</a>
+          <a href="#" class="paper-link">2012年6月 解析</a>
+          <a href="#" class="paper-link">2011年6月 试卷</a>
+          <a href="#" class="paper-link">2011年6月 解析</a>
+          <a href="#" class="paper-link">2010年6月 试卷</a>
+          <a href="#" class="paper-link">2010年6月 解析</a>
+          <a href="#" class="paper-link">2009年6月 试卷</a>
+          <a href="#" class="paper-link">2009年6月 解析</a>
+          <a href="#" class="paper-link">2008年6月 试卷</a>
+          <a href="#" class="paper-link">2008年6月 解析</a>
+          <a href="#" class="paper-link">2007年6月 试卷</a>
+          <a href="#" class="paper-link">2007年6月 解析</a>
+          <a href="#" class="paper-link">2006年6月 试卷</a>
+          <a href="#" class="paper-link">2006年6月 解析</a>
+          <a href="#" class="paper-link">2005年6月 试卷</a>
+          <a href="#" class="paper-link">2005年6月 解析</a>
+        </div>
+        <button class="show-more-btn" style="display: none;">
+          显示更多年份
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+            </svg>
+        </button>
+      </div>
+
+      <!-- D1 Section -->
+      <div class="paper-section">
+        <h3>Statistics 2</h3>
+        <div class="month-tabs">
+          <div class="month-tab active">January</div>
+          <div class="month-tab">June</div>
+        </div>
+        <div class="paper-links january-papers">
+          <a href="#" class="paper-link">2020年1月 试卷</a>
+          <a href="#" class="paper-link">2020年1月 解析</a>
+          <a href="#" class="paper-link">2019年1月 试卷</a>
+          <a href="#" class="paper-link">2019年1月 解析</a>
+          <a href="#" class="paper-link">2018年1月 试卷</a>
+          <a href="#" class="paper-link">2018年1月 解析</a>
+          <a href="#" class="paper-link">2017年1月 试卷</a>
+          <a href="#" class="paper-link">2017年1月 解析</a>
+          <a href="#" class="paper-link">2016年1月 试卷</a>
+          <a href="#" class="paper-link">2016年1月 解析</a>
+          <a href="#" class="paper-link">2015年1月 试卷</a>
+          <a href="#" class="paper-link">2015年1月 解析</a>
+          <a href="#" class="paper-link">2014年1月 试卷</a>
+          <a href="#" class="paper-link">2014年1月 解析</a>
+          <a href="#" class="paper-link">2013年1月 试卷</a>
+          <a href="#" class="paper-link">2013年1月 解析</a>
+          <a href="#" class="paper-link">2012年1月 试卷</a>
+          <a href="#" class="paper-link">2012年1月 解析</a>
+          <a href="#" class="paper-link">2011年1月 试卷</a>
+          <a href="#" class="paper-link">2011年1月 解析</a>
+          <a href="#" class="paper-link">2010年1月 试卷</a>
+          <a href="#" class="paper-link">2010年1月 解析</a>
+          <a href="#" class="paper-link">2009年1月 试卷</a>
+          <a href="#" class="paper-link">2009年1月 解析</a>
+          <a href="#" class="paper-link">2008年1月 试卷</a>
+          <a href="#" class="paper-link">2008年1月 解析</a>
+          <a href="#" class="paper-link">2007年1月 试卷</a>
+          <a href="#" class="paper-link">2007年1月 解析</a>
+          <a href="#" class="paper-link">2006年1月 试卷</a>
+          <a href="#" class="paper-link">2006年1月 解析</a>
+          <a href="#" class="paper-link">2005年1月 试卷</a>
+          <a href="#" class="paper-link">2005年1月 解析</a>
+          </div>
+        <button class="show-more-btn">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="paper-links june-papers" style="display: none;">
+          <a href="#" class="paper-link">2020年6月 试卷</a>
+          <a href="#" class="paper-link">2020年6月 解析</a>
+          <a href="#" class="paper-link">2019年6月 试卷</a>
+          <a href="#" class="paper-link">2019年6月 解析</a>
+          <a href="#" class="paper-link">2018年6月 试卷</a>
+          <a href="#" class="paper-link">2018年6月 解析</a>
+          <a href="#" class="paper-link">2017年6月 试卷</a>
+          <a href="#" class="paper-link">2017年6月 解析</a>
+          <a href="#" class="paper-link">2016年6月 试卷</a>
+          <a href="#" class="paper-link">2016年6月 解析</a>
+          <a href="#" class="paper-link">2015年6月 试卷</a>
+          <a href="#" class="paper-link">2015年6月 解析</a>
+          <a href="#" class="paper-link">2014年6月 试卷</a>
+          <a href="#" class="paper-link">2014年6月 解析</a>
+          <a href="#" class="paper-link">2013年6月 试卷</a>
+          <a href="#" class="paper-link">2013年6月 解析</a>
+          <a href="#" class="paper-link">2012年6月 试卷</a>
+          <a href="#" class="paper-link">2012年6月 解析</a>
+          <a href="#" class="paper-link">2011年6月 试卷</a>
+          <a href="#" class="paper-link">2011年6月 解析</a>
+          <a href="#" class="paper-link">2010年6月 试卷</a>
+          <a href="#" class="paper-link">2010年6月 解析</a>
+          <a href="#" class="paper-link">2009年6月 试卷</a>
+          <a href="#" class="paper-link">2009年6月 解析</a>
+          <a href="#" class="paper-link">2008年6月 试卷</a>
+          <a href="#" class="paper-link">2008年6月 解析</a>
+          <a href="#" class="paper-link">2007年6月 试卷</a>
+          <a href="#" class="paper-link">2007年6月 解析</a>
+          <a href="#" class="paper-link">2006年6月 试卷</a>
+          <a href="#" class="paper-link">2006年6月 解析</a>
+          <a href="#" class="paper-link">2005年6月 试卷</a>
+          <a href="#" class="paper-link">2005年6月 解析</a>
+        </div>
+        <button class="show-more-btn" style="display: none;">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- M1 Section -->
+      <div class="paper-section">
+        <h3>Statistics 3</h3>
+        <div class="month-tabs">
+          <div class="month-tab active">January</div>
+          <div class="month-tab">June</div>
+        </div>
+        <div class="paper-links january-papers">
+          <a href="#" class="paper-link">2020年1月 试卷</a>
+          <a href="#" class="paper-link">2020年1月 解析</a>
+          <a href="#" class="paper-link">2019年1月 试卷</a>
+          <a href="#" class="paper-link">2019年1月 解析</a>
+          <a href="#" class="paper-link">2018年1月 试卷</a>
+          <a href="#" class="paper-link">2018年1月 解析</a>
+          <a href="#" class="paper-link">2017年1月 试卷</a>
+          <a href="#" class="paper-link">2017年1月 解析</a>
+          <a href="#" class="paper-link">2016年1月 试卷</a>
+          <a href="#" class="paper-link">2016年1月 解析</a>
+          <a href="#" class="paper-link">2015年1月 试卷</a>
+          <a href="#" class="paper-link">2015年1月 解析</a>
+          <a href="#" class="paper-link">2014年1月 试卷</a>
+          <a href="#" class="paper-link">2014年1月 解析</a>
+          <a href="#" class="paper-link">2013年1月 试卷</a>
+          <a href="#" class="paper-link">2013年1月 解析</a>
+          <a href="#" class="paper-link">2012年1月 试卷</a>
+          <a href="#" class="paper-link">2012年1月 解析</a>
+          <a href="#" class="paper-link">2011年1月 试卷</a>
+          <a href="#" class="paper-link">2011年1月 解析</a>
+          <a href="#" class="paper-link">2010年1月 试卷</a>
+          <a href="#" class="paper-link">2010年1月 解析</a>
+          <a href="#" class="paper-link">2009年1月 试卷</a>
+          <a href="#" class="paper-link">2009年1月 解析</a>
+          <a href="#" class="paper-link">2008年1月 试卷</a>
+          <a href="#" class="paper-link">2008年1月 解析</a>
+          <a href="#" class="paper-link">2007年1月 试卷</a>
+          <a href="#" class="paper-link">2007年1月 解析</a>
+          <a href="#" class="paper-link">2006年1月 试卷</a>
+          <a href="#" class="paper-link">2006年1月 解析</a>
+          <a href="#" class="paper-link">2005年1月 试卷</a>
+          <a href="#" class="paper-link">2005年1月 解析</a>
+        </div>
+        <button class="show-more-btn">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div class="paper-links june-papers" style="display: none;">
+          <a href="#" class="paper-link">2020年6月 试卷</a>
+          <a href="#" class="paper-link">2020年6月 解析</a>
+          <a href="#" class="paper-link">2019年6月 试卷</a>
+          <a href="#" class="paper-link">2019年6月 解析</a>
+          <a href="#" class="paper-link">2018年6月 试卷</a>
+          <a href="#" class="paper-link">2018年6月 解析</a>
+          <a href="#" class="paper-link">2017年6月 试卷</a>
+          <a href="#" class="paper-link">2017年6月 解析</a>
+          <a href="#" class="paper-link">2016年6月 试卷</a>
+          <a href="#" class="paper-link">2016年6月 解析</a>
+          <a href="#" class="paper-link">2015年6月 试卷</a>
+          <a href="#" class="paper-link">2015年6月 解析</a>
+          <a href="#" class="paper-link">2014年6月 试卷</a>
+          <a href="#" class="paper-link">2014年6月 解析</a>
+          <a href="#" class="paper-link">2013年6月 试卷</a>
+          <a href="#" class="paper-link">2013年6月 解析</a>
+          <a href="#" class="paper-link">2012年6月 试卷</a>
+          <a href="#" class="paper-link">2012年6月 解析</a>
+          <a href="#" class="paper-link">2011年6月 试卷</a>
+          <a href="#" class="paper-link">2011年6月 解析</a>
+          <a href="#" class="paper-link">2010年6月 试卷</a>
+          <a href="#" class="paper-link">2010年6月 解析</a>
+          <a href="#" class="paper-link">2009年6月 试卷</a>
+          <a href="#" class="paper-link">2009年6月 解析</a>
+          <a href="#" class="paper-link">2008年6月 试卷</a>
+          <a href="#" class="paper-link">2008年6月 解析</a>
+          <a href="#" class="paper-link">2007年6月 试卷</a>
+          <a href="#" class="paper-link">2007年6月 解析</a>
+          <a href="#" class="paper-link">2006年6月 试卷</a>
+          <a href="#" class="paper-link">2006年6月 解析</a>
+          <a href="#" class="paper-link">2005年6月 试卷</a>
+          <a href="#" class="paper-link">2005年6月 解析</a>
+        </div>
+        <button class="show-more-btn" style="display: none;">
+          显示更多年份
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 控制加载动画
+      const loading = document.querySelector('.loading');
+      window.addEventListener('load', () => {
+        loading.style.opacity = '0';
+        setTimeout(() => {
+          loading.style.display = 'none';
+        }, 300);
+      });
+
+      // 添加滚动动画
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, {
+        threshold: 0.1
+      });
+
+      document.querySelectorAll('.paper-section').forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        observer.observe(section);
+      });
+
+      // 显示更多按钮功能
+      const showMoreBtns = document.querySelectorAll('.show-more-btn');
+      showMoreBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const paperLinks = btn.previousElementSibling;
+          const isExpanded = paperLinks.classList.contains('expanded');
+          
+          paperLinks.classList.toggle('expanded');
+          btn.classList.toggle('expanded');
+          
+          // 更新按钮文本和图标
+          if (isExpanded) {
+            btn.innerHTML = `
+              显示更多年份
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            `;
+          } else {
+            btn.innerHTML = `
+              收起
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            `;
+          }
+        });
+      });
+
+      // 处理月份标签切换
+      const monthTabs = document.querySelectorAll('.month-tab');
+      monthTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const paperSection = tab.closest('.paper-section');
+          const isJanuary = tab.textContent === 'January';
+          
+          // 更新标签状态
+          paperSection.querySelectorAll('.month-tab').forEach(t => {
+            t.classList.remove('active');
+          });
+          tab.classList.add('active');
+          
+          // 切换显示对应月份的试卷和按钮
+          const januaryPapers = paperSection.querySelector('.january-papers');
+          const junePapers = paperSection.querySelector('.june-papers');
+          const buttons = paperSection.querySelectorAll('.show-more-btn');
+          
+          if (isJanuary) {
+            januaryPapers.style.display = 'grid';
+            junePapers.style.display = 'none';
+            buttons[0].style.display = 'flex';
+            buttons[1].style.display = 'none';
+          } else {
+            januaryPapers.style.display = 'none';
+            junePapers.style.display = 'grid';
+            buttons[0].style.display = 'none';
+            buttons[1].style.display = 'flex';
+          }
+        });
+      });
+
+      // 搜索功能
+      const searchInput = document.querySelector('.search-input');
+      const filterSelects = document.querySelectorAll('.filter-select');
+      const paperSections = document.querySelectorAll('.paper-section');
+
+      function filterPapers() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const yearFilter = filterSelects[0].value;
+        const chapterFilter = filterSelects[1].value;
+
+        paperSections.forEach(section => {
+          const links = section.querySelectorAll('.paper-link');
+          const chapter = section.querySelector('h3').textContent;
+          const matchesChapter = chapterFilter === 'all' || chapter === chapterFilter;
+          
+          if (!matchesChapter) {
+            section.style.display = 'none';
+            return;
+          }
+          
+          let hasVisibleLinks = false;
+          links.forEach(link => {
+            const text = link.textContent.toLowerCase();
+            const year = text.match(/\d{4}/)?.[0] || '';
+            const isVisible = text.includes(searchTerm) && (yearFilter === 'all' || year === yearFilter);
+            link.style.display = isVisible ? 'flex' : 'none';
+            if (isVisible) hasVisibleLinks = true;
+          });
+          
+          section.style.display = hasVisibleLinks ? 'block' : 'none';
+        });
+      }
+
+      searchInput.addEventListener('input', filterPapers);
+      filterSelects.forEach(select => {
+        select.addEventListener('change', filterPapers);
+      });
+
+      // 添加波纹效果
+      document.querySelectorAll('.paper-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+          const ripple = document.createElement('div');
+          const rect = link.getBoundingClientRect();
+          
+          ripple.className = 'ripple';
+          ripple.style.left = `${e.clientX - rect.left}px`;
+          ripple.style.top = `${e.clientY - rect.top}px`;
+          
+          link.appendChild(ripple);
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 600);
+        });
+      });
+
+      // 添加更多交互效果
+      document.querySelectorAll('.paper-section').forEach(section => {
+        section.addEventListener('mousemove', (e) => {
+          const rect = section.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          section.style.setProperty('--mouse-x', `${x}%`);
+          section.style.setProperty('--mouse-y', `${y}%`);
+        });
+      });
+
+      // 检查PDF链接是否有效
+      function checkPDFLink(url) {
+        return fetch(url, { method: 'HEAD' })
+          .then(response => response.ok)
+          .catch(() => false);
+      }
+
+      // 处理文件下载
+      document.querySelectorAll('.paper-link').forEach(link => {
+        link.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const url = link.href;
+          
+          link.classList.add('loading');
+          const exists = await checkPDFLink(url);
+          link.classList.remove('loading');
+          
+          if (exists) {
+            window.open(url, '_blank');
+          } else {
+            alert('抱歉，该文件暂时无法访问');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html> 
